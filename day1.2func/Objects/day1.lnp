@@ -1,0 +1,4 @@
+".\Objects\main.obj",
+".\Objects\GPIO.obj" 
+TO ".\Objects\day1.2func" 
+PRINT(".\Listings\day1.m51") RAMSIZE(256) 
