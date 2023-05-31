@@ -1,0 +1,88 @@
+C51 COMPILER V9.60.7.0   MAIN                                                              04/10/2023 17:49:35 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\instal\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listin
+                    -gs\main.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include "reg51.h"
+   2          #include "intrins.h"
+   3          
+   4          sfr     T2L     =   0xd7;
+   5          sfr     T2H     =   0xd6;
+   6          sfr     AUXR    =   0x8e;
+   7          
+   8          sfr     P0M1    =   0x93;
+   9          sfr     P0M0    =   0x94;
+  10          sfr     P1M1    =   0x91;
+  11          sfr     P1M0    =   0x92;
+  12          sfr     P2M1    =   0x95;
+  13          sfr     P2M0    =   0x96;
+  14          sfr     P3M1    =   0xb1;
+  15          sfr     P3M0    =   0xb2;
+  16          sfr     P4M1    =   0xb3;
+  17          sfr     P4M0    =   0xb4;
+  18          sfr     P5M1    =   0xc9;
+  19          sfr     P5M0    =   0xca;
+  20          
+  21          sbit    P10     =   P1^0;
+  22          sbit    P11     =   P1^1;
+  23          
+  24          void UART1_Isr() interrupt 4
+  25          {
+  26   1          if (TI)
+  27   1          {
+  28   2              TI = 0;                                 //清中断标志
+  29   2              P10 = !P10;                             //测试端口
+  30   2          }
+  31   1          if (RI)
+  32   1          {
+  33   2              RI = 0;                                 //清中断标志
+  34   2              P11 = !P11;                             //测试端口
+  35   2          }
+  36   1      }
+  37          
+  38          void main()
+  39          {
+  40   1          P0M0 = 0x00;
+  41   1          P0M1 = 0x00;
+  42   1          P1M0 = 0x00;
+  43   1          P1M1 = 0x00;
+  44   1          P2M0 = 0x00;
+  45   1          P2M1 = 0x00;
+  46   1          P3M0 = 0x00;
+  47   1          P3M1 = 0x00;
+  48   1          P4M0 = 0x00;
+  49   1          P4M1 = 0x00;
+  50   1          P5M0 = 0x00;
+  51   1          P5M1 = 0x00;
+  52   1      
+  53   1          SCON = 0x50;
+  54   1          T2L = 0xe8;                                 //65536-11059200/115200/4=0FFE8H
+C51 COMPILER V9.60.7.0   MAIN                                                              04/10/2023 17:49:35 PAGE 2   
+
+  55   1          T2H = 0xff;
+  56   1          AUXR = 0x15;                                //启动定时器
+  57   1          ES = 1;                                     //使能串口中断
+  58   1          EA = 1;
+  59   1          SBUF = 0x5a;                                //发送测试数据
+  60   1      
+  61   1          while (1);
+  62   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     61    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
