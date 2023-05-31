@@ -1,0 +1,127 @@
+C51 COMPILER V9.60.7.0   MAIN                                                              04/12/2023 14:20:36 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\instal\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listin
+                    -gs\main.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include "config.h"
+   2          #include "GPIO.h"
+   3          #include "timer.h"
+   4          #include "UART.h"
+   5          #include "delay.h"
+   6          #include <stdio.h>
+   7          /*
+   8          1.串口：通过PC给串口发消息
+   9          2.如果收到0x01，timer中就去打印Hello Word
+  10          3.如果收到其他的，就不打印
+  11          */
+  12          
+  13          u8 tmp=0x00;
+  14          
+  15          //GPIO初始化
+  16          void GPIO_config(void) {
+  17   1          GPIO_InitTypeDef GPIO_InitStructure;//结构定义
+  18   1          GPIO_InitStructure.Mode=GPIO_PullUp;//IO模式，GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP
+  19   1          GPIO_InitStructure.Pin=GPIO_Pin_3;//指定要初始化的IO
+  20   1          GPIO_Inilize(GPIO_P5, &GPIO_InitStructure);//初始化
+  21   1      }
+  22          
+  23          //UART初始化
+  24          void UART_config(void) {
+  25   1          COMx_InitDefine        COMx_InitStructure;                    //结构定义
+  26   1          COMx_InitStructure.UART_Mode      = UART_8bit_BRTx;    //模式, UART_ShiftRight,UART_8bit_BRTx,UART_9bi
+             -t,UART_9bit_BRTx
+  27   1          COMx_InitStructure.UART_BRT_Use   = BRT_Timer1;            //选择波特率发生器, BRT_Timer1, BRT_Timer2 
+             -(注意: 串口2固定使用BRT_Timer2)
+  28   1          COMx_InitStructure.UART_BaudRate  = 115200ul;            //波特率, 一般 110 ~ 115200
+  29   1          COMx_InitStructure.UART_RxEnable  = ENABLE;                //接收允许,   ENABLE或DISABLE
+  30   1          COMx_InitStructure.BaudRateDouble = DISABLE;            //波特率加倍, ENABLE或DISABLE
+  31   1          COMx_InitStructure.UART_Interrupt = ENABLE;                //中断允许,   ENABLE或DISABLE
+  32   1          COMx_InitStructure.UART_Priority  = Priority_0;            //指定中断优先级(低到高) Priority_0,Priorit
+             -y_1,Priority_2,Priority_3
+  33   1          COMx_InitStructure.UART_P_SW      = UART1_SW_P30_P31;    //切换端口,   UART1_SW_P30_P31,UART1_SW_P36_P
+             -37,UART1_SW_P16_P17,UART1_SW_P43_P44
+  34   1          UART_Configuration(UART1, &COMx_InitStructure);        //初始化串口1 UART1,UART2,UART3,UART4
+  35   1      }
+  36          
+  37          //Timer初始化
+  38          void TIMER_config(void) {
+  39   1          TIM_InitTypeDef        TIM_InitStructure;                        //结构定义
+  40   1          TIM_InitStructure.TIM_Mode      = TIM_16BitAutoReload;    //指定工作模式,   TIM_16BitAutoReload,TIM_16
+             -Bit,TIM_8BitAutoReload,TIM_16BitAutoReloadNoMask
+  41   1          TIM_InitStructure.TIM_Priority    = Priority_0;            //指定中断优先级(低到高) Priority_0,Priorit
+             -y_1,Priority_2,Priority_3
+  42   1          TIM_InitStructure.TIM_Interrupt = ENABLE;                    //中断是否允许,   ENABLE或DISABLE
+  43   1          TIM_InitStructure.TIM_ClkSource = TIM_CLOCK_1T;        //指定时钟源,     TIM_CLOCK_1T,TIM_CLOCK_12T,TI
+             -M_CLOCK_Ext
+  44   1          TIM_InitStructure.TIM_ClkOut    = DISABLE;                //是否输出高速脉冲, ENABLE或DISABLE
+  45   1          TIM_InitStructure.TIM_Value     = 65536UL - (MAIN_Fosc / 1000UL);        //初值,>367
+  46   1          TIM_InitStructure.TIM_Run       = ENABLE;                    //是否初始化后启动定时器, ENABLE或DISABLE
+  47   1          Timer_Inilize(Timer0,&TIM_InitStructure);                    //初始化Timer0      Timer0,Timer1,Timer2,
+C51 COMPILER V9.60.7.0   MAIN                                                              04/12/2023 14:20:36 PAGE 2   
+
+             -Timer3,Timer4
+  48   1      }
+  49          
+  50          char putchar (char dat){
+  51   1        TX1_write2buff(dat);
+  52   1      }
+*** WARNING C173 IN LINE 52 OF main.c: missing return-expression
+  53          
+  54          void timer0_call() {
+  55   1          if(tmp == 0x01) {
+  56   2             // PrintString1("Hello Word\r\n"); // 写字符串
+  57   2            printf("Hello Word\r\n");
+  58   2          }
+  59   1      }
+  60          
+  61          int main() {
+  62   1          u8 i;
+  63   1          //引用
+  64   1          GPIO_config();
+  65   1          UART_config();
+  66   1          TIMER_config();
+  67   1      
+  68   1          //中断总开关
+  69   1          EA=1;
+  70   1      
+  71   1          while(1) {
+  72   2              delay_ms(10);
+  73   2              //接收PC发来的消息
+  74   2              if(COM1.RX_TimeOut > 0)        //超时计数
+  75   2              {
+  76   3                  if(--COM1.RX_TimeOut == 0)
+  77   3                  {
+  78   4                      if(COM1.RX_Cnt > 0)
+  79   4                      {
+  80   5                          for(i=0; i<COM1.RX_Cnt; i++)    {
+  81   6                              // TODO: RX1_Buffer[i]存的是接收的数据
+  82   6                              // TODO: 做具体的逻辑
+  83   6                              tmp=RX1_Buffer[i];
+  84   6                              TX1_write2buff(RX1_Buffer[i]);// 写一个byte
+  85   6                          }
+  86   5                      }
+  87   4                      COM1.RX_Cnt = 0;
+  88   4                  }
+  89   3              }
+  90   2          }
+  91   1      }
+*** WARNING C290 IN LINE 52 OF main.c: missing return value
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    175    ----
+   CONSTANT SIZE    =     13    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1      23
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  2 WARNING(S),  0 ERROR(S)
