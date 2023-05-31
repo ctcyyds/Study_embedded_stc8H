@@ -1,0 +1,176 @@
+C51 COMPILER V9.60.7.0   MAIN                                                              04/13/2023 20:53:11 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\instal\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listin
+                    -gs\main.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include "config.h"
+   2          #include "GPIO.h"
+   3          #include "delay.h"
+   4          #include "UART.h"
+   5          #include "timer.h"
+   6          
+   7          /*
+   8          LED顺序点亮
+   9          */
+  10          //声明/替换
+  11          #define LED1 P27
+  12          #define LED2 P26
+  13          #define LED3 P15
+  14          #define LED4 P14
+  15          #define LED5 P23
+  16          #define LED6 P22
+  17          #define LED7 P21
+  18          #define LED8 P20
+  19          #define LED_SW P45
+  20          
+  21          u8 tmp=0x00;
+  22          
+  23          //GPIO初始化
+  24          void GPIO_config(void) {
+  25   1          GPIO_InitTypeDef GPIO_InitStructure;//结构定义
+  26   1          GPIO_InitStructure.Mode=GPIO_PullUp;//IO模式，GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP
+  27   1          GPIO_InitStructure.Pin=GPIO_Pin_5;//指定要初始化的IO
+  28   1          GPIO_Inilize(GPIO_P4, &GPIO_InitStructure);//初始化
+  29   1      
+  30   1          GPIO_InitStructure.Mode=GPIO_PullUp;//IO模式，GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP
+  31   1          GPIO_InitStructure.Pin=GPIO_Pin_7 | GPIO_Pin_6 | GPIO_Pin_3| GPIO_Pin_2 | GPIO_Pin_1 | GPIO_Pin_0;//指
+             -定要初始化的IO
+  32   1          GPIO_Inilize(GPIO_P2, &GPIO_InitStructure);//初始化
+  33   1      
+  34   1          GPIO_InitStructure.Mode=GPIO_PullUp;//IO模式，GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP
+  35   1          GPIO_InitStructure.Pin=GPIO_Pin_5 | GPIO_Pin_4;//指定要初始化的IO
+  36   1          GPIO_Inilize(GPIO_P1, &GPIO_InitStructure);//初始化
+  37   1      }
+  38          
+  39          //UART初始化
+  40          void UART_config(void) {
+  41   1          COMx_InitDefine        COMx_InitStructure;                    //结构定义
+  42   1          COMx_InitStructure.UART_Mode      = UART_8bit_BRTx;    //模式, UART_ShiftRight,UART_8bit_BRTx,UART_9bi
+             -t,UART_9bit_BRTx
+  43   1          COMx_InitStructure.UART_BRT_Use   = BRT_Timer1;            //选择波特率发生器, BRT_Timer1, BRT_Timer2 
+             -(注意: 串口2固定使用BRT_Timer2)
+  44   1          COMx_InitStructure.UART_BaudRate  = 115200ul;            //波特率, 一般 110 ~ 115200
+  45   1          COMx_InitStructure.UART_RxEnable  = ENABLE;                //接收允许,   ENABLE或DISABLE
+  46   1          COMx_InitStructure.BaudRateDouble = DISABLE;            //波特率加倍, ENABLE或DISABLE
+  47   1          COMx_InitStructure.UART_Interrupt = ENABLE;                //中断允许,   ENABLE或DISABLE
+  48   1          COMx_InitStructure.UART_Priority  = Priority_0;            //指定中断优先级(低到高) Priority_0,Priorit
+             -y_1,Priority_2,Priority_3
+  49   1          COMx_InitStructure.UART_P_SW      = UART1_SW_P30_P31;    //切换端口,   UART1_SW_P30_P31,UART1_SW_P36_P
+             -37,UART1_SW_P16_P17,UART1_SW_P43_P44
+C51 COMPILER V9.60.7.0   MAIN                                                              04/13/2023 20:53:11 PAGE 2   
+
+  50   1          UART_Configuration(UART1, &COMx_InitStructure);        //初始化串口1 UART1,UART2,UART3,UART4
+  51   1      }
+  52          
+  53          //timer初始化
+  54          void TIMER_config(void) {
+  55   1          TIM_InitTypeDef        TIM_InitStructure;                        //结构定义
+  56   1          TIM_InitStructure.TIM_Mode      = TIM_16BitAutoReload;    //指定工作模式,   TIM_16BitAutoReload,TIM_16
+             -Bit,TIM_8BitAutoReload,TIM_16BitAutoReloadNoMask
+  57   1          TIM_InitStructure.TIM_Priority    = Priority_0;            //指定中断优先级(低到高) Priority_0,Priorit
+             -y_1,Priority_2,Priority_3
+  58   1          TIM_InitStructure.TIM_Interrupt = ENABLE;                    //中断是否允许,   ENABLE或DISABLE
+  59   1          TIM_InitStructure.TIM_ClkSource = TIM_CLOCK_1T;        //指定时钟源,     TIM_CLOCK_1T,TIM_CLOCK_12T,TI
+             -M_CLOCK_Ext
+  60   1          TIM_InitStructure.TIM_ClkOut    = DISABLE;                //是否输出高速脉冲, ENABLE或DISABLE
+  61   1          TIM_InitStructure.TIM_Value     = 65536UL - (MAIN_Fosc / 100000UL);        //初值,>367
+  62   1          TIM_InitStructure.TIM_Run       = ENABLE;                    //是否初始化后启动定时器, ENABLE或DISABLE
+  63   1          Timer_Inilize(Timer0,&TIM_InitStructure);                    //初始化Timer0      Timer0,Timer1,Timer2,
+             -Timer3,Timer4
+  64   1      }
+  65          
+  66          void timer0_call() {
+  67   1          u8 i;
+  68   1          //定时收消息
+  69   1          if(COM1.RX_TimeOut > 0)        //超时计数
+  70   1          {
+  71   2              if(--COM1.RX_TimeOut == 0)
+  72   2              {
+  73   3                  if(COM1.RX_Cnt > 0)
+  74   3                  {
+  75   4                      for(i=0; i<COM1.RX_Cnt; i++)    {
+  76   5                          // TODO: RX1_Buffer[i]存的是接收的数据
+  77   5                          // TODO: 做具体的逻辑
+  78   5                          //TX1_write2buff(RX1_Buffer[i]);// 写一个byte
+  79   5                          tmp = RX1_Buffer[i];
+  80   5      
+  81   5                      }
+  82   4                  }
+  83   3                  COM1.RX_Cnt = 0;
+  84   3              }
+  85   2          }
+  86   1      }
+  87          
+  88          void show_left() {
+  89   1          int i;
+  90   1          for(i = 0; i < 8; i++) {
+  91   2              LED1 = i==0 ? 0 : 1;
+  92   2              LED2 = i==1 ? 0 : 1;
+  93   2              LED3 = i==2 ? 0 : 1;
+  94   2              LED4 = i==3 ? 0 : 1;
+  95   2              LED5 = i==4 ? 0 : 1;
+  96   2              LED6 = i==5 ? 0 : 1;
+  97   2              LED7 = i==6 ? 0 : 1;
+  98   2              LED8 = i==7 ? 0 : 1;
+  99   2              delay_ms(250);
+ 100   2          }
+ 101   1      }
+ 102          
+ 103          void show_right() {
+ 104   1          int i;
+ 105   1          for(i = 8; i >= 0; i--) {
+ 106   2              LED1 = i==0 ? 0 : 1;
+ 107   2              LED2 = i==1 ? 0 : 1;
+C51 COMPILER V9.60.7.0   MAIN                                                              04/13/2023 20:53:11 PAGE 3   
+
+ 108   2              LED3 = i==2 ? 0 : 1;
+ 109   2              LED4 = i==3 ? 0 : 1;
+ 110   2              LED5 = i==4 ? 0 : 1;
+ 111   2              LED6 = i==5 ? 0 : 1;
+ 112   2              LED7 = i==6 ? 0 : 1;
+ 113   2              LED8 = i==7 ? 0 : 1;
+ 114   2              delay_ms(250);
+ 115   2          }
+ 116   1      }
+ 117          
+ 118          int main() {
+ 119   1          
+ 120   1          //引用
+ 121   1          GPIO_config();
+ 122   1          UART_config();
+ 123   1          TIMER_config();
+ 124   1          EA = 1;
+ 125   1          LED_SW = 0;
+ 126   1        
+ 127   1      
+ 128   1          while(1) {
+ 129   2              delay_ms(10);
+ 130   2              if(tmp == 0x00) {
+ 131   3                  show_left();
+ 132   3                  //防止下回继续
+ 133   3                  tmp = 0x02;
+ 134   3              } else if(tmp == 0x01) {
+ 135   3                  show_right();
+ 136   3                  tmp = 0x02;
+ 137   3              }
+ 138   2          }
+ 139   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    492    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1      26
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
