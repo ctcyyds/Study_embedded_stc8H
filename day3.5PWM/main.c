@@ -1,0 +1,51 @@
+#include "config.h"
+#include "GPIO.h"
+#include "PWM.h"
+#include "delay.h"
+//替换
+#include LED_SW P45
+#define LED3 P15
+
+//GPIO初始化
+void GPIO_config(void) {
+    GPIO_InitTypeDef GPIO_InitStructure;//结构定义
+    GPIO_InitStructure.Mode=GPIO_PullUp;//IO模式，GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP
+    GPIO_InitStructure.Pin=GPIO_Pin_5;//指定要初始化的IO
+    GPIO_Inilize(GPIO_P4, &GPIO_InitStructure);//初始化
+
+    GPIO_InitStructure.Mode=GPIO_PullUp;//IO模式，GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP
+    GPIO_InitStructure.Pin=GPIO_Pin_5;//指定要初始化的IO
+    GPIO_Inilize(GPIO_P1, &GPIO_InitStructure);//初始化
+}
+
+//PWM
+void	PWM_config(void)
+{
+    PWMx_InitDefine		PWMx_InitStructure;
+		//PWM总配置
+    PWMx_InitStructure.PWM_Period   		= MAIN_Fosc / 1000 - 1;	//周期时间,   0~65535
+    PWMx_InitStructure.PWM_DeadTime 		= 0;								//死区发生器设置, 0~255
+    PWMx_InitStructure.PWM_EnoSelect		= ENO4P | ENO4N;	//输出通道选择,	ENO1P,ENO1N,ENO2P,ENO2N,ENO3P,ENO3N,ENO4P,ENO4N / ENO5P,ENO6P,ENO7P,ENO8P
+		//PWM端口配置
+    PWMx_InitStructure.PWM4_Mode    		=	CCMRn_PWM_MODE1;	//模式,		CCMRn_FREEZE,CCMRn_MATCH_VALID,CCMRn_MATCH_INVALID,CCMRn_ROLLOVER,CCMRn_FORCE_INVALID,CCMRn_FORCE_VALID,CCMRn_PWM_MODE1,CCMRn_PWM_MODE2
+    PWMx_InitStructure.PWM4_SetPriority	= Priority_0;			//指定中断优先级(低到高) Priority_0,Priority_1,Priority_2,Priority_3
+    PWMx_InitStructure.PWM_PS_SW    		=	PWM4_SW_P26_P27;//切换端口
+    PWMx_InitStructure.PWM4_Duty    		= PWMA_Duty.PWM4_Duty;	//PWM4占空比时间, 0~Period
+
+    PWMx_InitStructure.PWM_CC4Enable   = ENABLE;				//开启PWM4P输入捕获/比较输出,  ENABLE,DISABLE
+    PWMx_InitStructure.PWM_CC4NEnable  = ENABLE;				//开启PWM4N输入捕获/比较输出,  ENABLE,DISABLE
+		//启动配置
+    PWMx_InitStructure.PWM_MainOutEnable= ENABLE;				//主输出使能, ENABLE,DISABLE
+    PWMx_InitStructure.PWM_CEN_Enable   = ENABLE;				//使能计数器, ENABLE,DISABLE
+    PWM_Configuration(PWMA, &PWMx_InitStructure);				//初始化PWM,  PWMA,PWMB
+}
+
+int main() {
+    EA = 1;
+    P45 = 0;
+    //引用
+    GPIO_config();
+    while(1) {
+
+    }
+}

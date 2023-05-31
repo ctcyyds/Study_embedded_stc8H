@@ -1,0 +1,369 @@
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                    04/12/2023  20:33:52  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.4.0, INVOKED BY:
+D:\INSTAL\KEIL_V5\C51\BIN\BL51.EXE .\Objects\main.obj, .\Objects\GPIO.obj, .\Objects\PWM.obj TO .\Objects\project PRINT 
+>> (.\Listings\project.m51) RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\main.obj (MAIN)
+  .\Objects\GPIO.obj (GPIO)
+  .\Objects\PWM.obj (PWM)
+  D:\INSTAL\KEIL_V5\C51\LIB\C51S.LIB (?C?CLDPTR)
+  D:\INSTAL\KEIL_V5\C51\LIB\C51S.LIB (?C?CLDOPTR)
+  D:\INSTAL\KEIL_V5\C51\LIB\C51S.LIB (?C?ILDPTR)
+  D:\INSTAL\KEIL_V5\C51\LIB\C51S.LIB (?C?ILDOPTR)
+
+
+LINK MAP OF MODULE:  .\Objects\project (MAIN)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     049DH     UNIT         ?PR?_PWM_CONFIGURATION?PWM
+            CODE    049DH     0254H     UNIT         ?PR?_GPIO_INILIZE?GPIO
+            CODE    06F1H     00A9H     UNIT         ?C?LIB_CODE
+            CODE    079AH     0085H     UNIT         ?PR?_UPDATEPWM?PWM
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\project (MAIN)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\project (MAIN)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        MAIN
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  D:00C0H         PUBLIC        P4
+  D:00C8H         PUBLIC        P5
+  D:00E8H         PUBLIC        P6
+  D:00F8H         PUBLIC        P7
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  04/12/2023  20:33:52  PAGE 2
+
+
+  D:00A8H         PUBLIC        IE
+  D:00B8H         PUBLIC        IP
+  D:00D8H         PUBLIC        CCON
+  D:0098H         PUBLIC        SCON
+  D:0088H         PUBLIC        TCON
+  D:00F0H         PUBLIC        B
+  D:00E0H         PUBLIC        ACC
+  D:00D0H         PUBLIC        PSW
+  -------         ENDMOD        MAIN
+
+  -------         MODULE        GPIO
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0093H         PUBLIC        P0M1
+  D:0092H         PUBLIC        P1M0
+  D:0096H         PUBLIC        P2M0
+  D:0091H         PUBLIC        P1M1
+  D:0080H         PUBLIC        P0
+  D:00B2H         PUBLIC        P3M0
+  D:0095H         PUBLIC        P2M1
+  D:0090H         PUBLIC        P1
+  D:00B4H         PUBLIC        P4M0
+  D:00B1H         PUBLIC        P3M1
+  D:00A0H         PUBLIC        P2
+  D:00CAH         PUBLIC        P5M0
+  D:00B3H         PUBLIC        P4M1
+  D:00B0H         PUBLIC        P3
+  D:00CCH         PUBLIC        P6M0
+  D:00C9H         PUBLIC        P5M1
+  D:00C0H         PUBLIC        P4
+  D:00E2H         PUBLIC        P7M0
+  D:00CBH         PUBLIC        P6M1
+  D:00C8H         PUBLIC        P5
+  D:00E8H         PUBLIC        P6
+  D:00E1H         PUBLIC        P7M1
+  D:00F8H         PUBLIC        P7
+  D:00A8H         PUBLIC        IE
+  D:00B8H         PUBLIC        IP
+  D:00D8H         PUBLIC        CCON
+  D:0098H         PUBLIC        SCON
+  D:0088H         PUBLIC        TCON
+  D:00F0H         PUBLIC        B
+  D:00E0H         PUBLIC        ACC
+  C:049DH         PUBLIC        _GPIO_Inilize
+  D:00D0H         PUBLIC        PSW
+  D:0094H         PUBLIC        P0M0
+  -------         PROC          _GPIO_INILIZE
+  D:0007H         SYMBOL        GPIO
+  D:0001H         SYMBOL        GPIOx
+  C:049DH         LINE#         28
+  C:049DH         LINE#         29
+  C:049DH         LINE#         30
+  C:04A6H         LINE#         31
+  C:04B2H         LINE#         32
+  C:04B5H         LINE#         33
+  C:04B5H         LINE#         34
+  C:04C3H         LINE#         35
+  C:04D4H         LINE#         36
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  04/12/2023  20:33:52  PAGE 3
+
+
+  C:04E5H         LINE#         37
+  C:04F6H         LINE#         38
+  C:04F6H         LINE#         39
+  C:04FBH         LINE#         40
+  C:04FBH         LINE#         41
+  C:050CH         LINE#         42
+  C:051BH         LINE#         43
+  C:052BH         LINE#         44
+  C:053EH         LINE#         45
+  C:053EH         LINE#         46
+  C:0543H         LINE#         47
+  C:0543H         LINE#         48
+  C:0554H         LINE#         49
+  C:0563H         LINE#         50
+  C:0573H         LINE#         51
+  C:0586H         LINE#         52
+  C:0586H         LINE#         53
+  C:058BH         LINE#         54
+  C:058BH         LINE#         55
+  C:059CH         LINE#         56
+  C:05ABH         LINE#         57
+  C:05BBH         LINE#         58
+  C:05CEH         LINE#         59
+  C:05CEH         LINE#         60
+  C:05D3H         LINE#         61
+  C:05D3H         LINE#         62
+  C:05E4H         LINE#         63
+  C:05F3H         LINE#         64
+  C:0603H         LINE#         65
+  C:0616H         LINE#         66
+  C:0616H         LINE#         67
+  C:061BH         LINE#         68
+  C:061BH         LINE#         69
+  C:062CH         LINE#         70
+  C:063BH         LINE#         71
+  C:064BH         LINE#         72
+  C:065EH         LINE#         73
+  C:065EH         LINE#         74
+  C:0663H         LINE#         75
+  C:0663H         LINE#         76
+  C:0674H         LINE#         77
+  C:0683H         LINE#         78
+  C:0693H         LINE#         79
+  C:06A6H         LINE#         80
+  C:06A6H         LINE#         81
+  C:06ABH         LINE#         82
+  C:06ABH         LINE#         83
+  C:06BCH         LINE#         84
+  C:06CBH         LINE#         85
+  C:06DBH         LINE#         86
+  C:06EEH         LINE#         87
+  C:06EEH         LINE#         88
+  C:06F0H         LINE#         89
+  -------         ENDPROC       _GPIO_INILIZE
+  -------         ENDMOD        GPIO
+
+  -------         MODULE        PWM
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  04/12/2023  20:33:52  PAGE 4
+
+
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  D:00C0H         PUBLIC        P4
+  D:00C8H         PUBLIC        P5
+  D:00E8H         PUBLIC        P6
+  D:00F8H         PUBLIC        P7
+  D:00BAH         PUBLIC        P_SW2
+  D:00A8H         PUBLIC        IE
+  D:00B6H         PUBLIC        IP2H
+  D:00EEH         PUBLIC        IP3H
+  D:00B8H         PUBLIC        IP
+  C:079AH         PUBLIC        _UpdatePwm
+  D:00D8H         PUBLIC        CCON
+  D:0098H         PUBLIC        SCON
+  D:0088H         PUBLIC        TCON
+  C:0000H         PUBLIC        _PWM_Configuration
+  D:00F0H         PUBLIC        B
+  D:00E0H         PUBLIC        ACC
+  D:00B5H         PUBLIC        IP2
+  D:00DFH         PUBLIC        IP3
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          _PWM_CONFIGURATION
+  D:0007H         SYMBOL        PWM
+  D:0001H         SYMBOL        PWMx
+  C:0000H         LINE#         15
+  C:0000H         LINE#         16
+  C:0000H         LINE#         17
+  C:0008H         LINE#         18
+  C:0008H         LINE#         19
+  C:000BH         LINE#         21
+  C:003EH         LINE#         22
+  C:0071H         LINE#         23
+  C:00A4H         LINE#         24
+  C:00D7H         LINE#         26
+  C:00DCH         LINE#         27
+  C:00DEH         LINE#         28
+  C:00EAH         LINE#         29
+  C:00F9H         LINE#         30
+  C:0108H         LINE#         31
+  C:0117H         LINE#         32
+  C:0129H         LINE#         33
+  C:012DH         LINE#         34
+  C:013FH         LINE#         35
+  C:0143H         LINE#         37
+  C:0155H         LINE#         38
+  C:0159H         LINE#         39
+  C:016BH         LINE#         40
+  C:016FH         LINE#         41
+  C:0181H         LINE#         42
+  C:0185H         LINE#         43
+  C:0197H         LINE#         44
+  C:019BH         LINE#         45
+  C:01ADH         LINE#         46
+  C:01B1H         LINE#         47
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  04/12/2023  20:33:52  PAGE 5
+
+
+  C:01C3H         LINE#         48
+  C:01C7H         LINE#         49
+  C:01D9H         LINE#         50
+  C:01DDH         LINE#         51
+  C:01EFH         LINE#         52
+  C:01F3H         LINE#         54
+  C:0203H         LINE#         55
+  C:0213H         LINE#         56
+  C:0223H         LINE#         57
+  C:0233H         LINE#         58
+  C:0243H         LINE#         60
+  C:025FH         LINE#         61
+  C:0269H         LINE#         62
+  C:0273H         LINE#         63
+  C:027DH         LINE#         65
+  C:028FH         LINE#         66
+  C:0293H         LINE#         67
+  C:02A5H         LINE#         68
+  C:02A9H         LINE#         69
+  C:02BCH         LINE#         70
+  C:02C0H         LINE#         72
+  C:02C0H         LINE#         73
+  C:02C3H         LINE#         74
+  C:02C3H         LINE#         76
+  C:02CBH         LINE#         77
+  C:02CBH         LINE#         78
+  C:02CEH         LINE#         80
+  C:0301H         LINE#         82
+  C:0306H         LINE#         83
+  C:0308H         LINE#         84
+  C:0317H         LINE#         85
+  C:0326H         LINE#         86
+  C:0335H         LINE#         87
+  C:0344H         LINE#         88
+  C:0356H         LINE#         89
+  C:035AH         LINE#         90
+  C:036CH         LINE#         91
+  C:0370H         LINE#         93
+  C:0382H         LINE#         94
+  C:0386H         LINE#         95
+  C:0398H         LINE#         96
+  C:039CH         LINE#         97
+  C:03AEH         LINE#         98
+  C:03B2H         LINE#         99
+  C:03C4H         LINE#         100
+  C:03C8H         LINE#         102
+  C:03D8H         LINE#         103
+  C:03E8H         LINE#         104
+  C:03F8H         LINE#         105
+  C:0408H         LINE#         106
+  C:0418H         LINE#         108
+  C:0434H         LINE#         109
+  C:043EH         LINE#         110
+  C:0448H         LINE#         111
+  C:0452H         LINE#         113
+  C:0464H         LINE#         114
+  C:0468H         LINE#         115
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  04/12/2023  20:33:52  PAGE 6
+
+
+  C:047AH         LINE#         116
+  C:047EH         LINE#         117
+  C:0490H         LINE#         118
+  C:0494H         LINE#         120
+  C:0497H         LINE#         121
+  C:049AH         LINE#         122
+  C:049AH         LINE#         124
+  C:049CH         LINE#         125
+  -------         ENDPROC       _PWM_CONFIGURATION
+  -------         PROC          _UPDATEPWM
+  D:0007H         SYMBOL        PWM
+  D:0001H         SYMBOL        PWMx
+  C:079AH         LINE#         130
+  C:079AH         LINE#         131
+  C:079AH         LINE#         132
+  C:079DH         LINE#         134
+  C:07A2H         LINE#         135
+  C:07A2H         LINE#         136
+  C:07AFH         LINE#         137
+  C:07BFH         LINE#         138
+  C:07CFH         LINE#         139
+  C:07D9H         LINE#         140
+  C:07DBH         LINE#         142
+  C:07DBH         LINE#         143
+  C:07EBH         LINE#         144
+  C:07FBH         LINE#         145
+  C:080BH         LINE#         146
+  C:081BH         LINE#         147
+  C:081BH         LINE#         149
+  C:081EH         LINE#         150
+  -------         ENDPROC       _UPDATEPWM
+  -------         ENDMOD        PWM
+
+  -------         MODULE        ?C?CLDPTR
+  C:06F1H         PUBLIC        ?C?CLDPTR
+  -------         ENDMOD        ?C?CLDPTR
+
+  -------         MODULE        ?C?CLDOPTR
+  C:070AH         PUBLIC        ?C?CLDOPTR
+  -------         ENDMOD        ?C?CLDOPTR
+
+  -------         MODULE        ?C?ILDPTR
+  C:0737H         PUBLIC        ?C?ILDPTR
+  -------         ENDMOD        ?C?ILDPTR
+
+  -------         MODULE        ?C?ILDOPTR
+  C:0762H         PUBLIC        ?C?ILDOPTR
+  -------         ENDMOD        ?C?ILDOPTR
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_GPIO_INILIZE?GPIO
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_PWM_CONFIGURATION?PWM
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_UPDATEPWM?PWM
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  04/12/2023  20:33:52  PAGE 7
+
+
+
+*** WARNING L10: CANNOT DETERMINE ROOT SEGMENT
+
+Program Size: data=8.0 xdata=0 code=2079
+LINK/LOCATE RUN COMPLETE.  4 WARNING(S),  0 ERROR(S)
