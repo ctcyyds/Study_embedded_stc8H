@@ -1,0 +1,43 @@
+C51 COMPILER V9.60.7.0   MAIN                                                              04/10/2023 18:22:10 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\instal\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listin
+                    -gs\main.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          /*P53 高低变化*/
+   2          #include "config.h"
+   3          #include "GPIO.h"
+   4          /*
+   5          IO初始化
+   6          */
+   7          void GPIO_config(void) {
+   8   1          GPIO_InitTypeDef GPIO_InitStructure;//结构定义
+   9   1          GPIO_InitStructure.Mode=GPIO_PullUp;//IO模式，GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP
+  10   1          GPIO_InitStructure.Pin=GPIO_Pin_3;//指定要初始化的IO
+  11   1          GPIO_Inilize(GPIO_P5, &GPIO_InitStructure);//初始化
+  12   1      }
+  13          int main() {
+  14   1          GPIO_config();
+  15   1          while(1) {
+  16   2              P53 =! P53;
+  17   2              NOP1();
+  18   2          }
+  19   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     24    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       2
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
