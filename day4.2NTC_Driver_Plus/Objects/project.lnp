@@ -1,0 +1,8 @@
+".\Objects\main.obj",
+".\Objects\ADC.obj",
+".\Objects\delay.obj",
+".\Objects\GPIO.obj",
+".\Objects\UART.obj",
+".\Objects\NTC.obj" 
+TO ".\Objects\project" 
+PRINT(".\Listings\project.m51") RAMSIZE(256) 

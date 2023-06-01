@@ -1,0 +1,70 @@
+#include "NTC.h"
+
+//GPIO初始化
+void GPIO_config(void) {
+    GPIO_InitTypeDef GPIO_InitStructure;//结构定义
+    GPIO_InitStructure.Mode=GPIO_HighZ;//IO模式，GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP
+    GPIO_InitStructure.Pin=GPIO_Pin_4;//指定要初始化的IO
+    GPIO_Inilize(GPIO_P0, &GPIO_InitStructure);//初始化
+}
+
+//ADC初始化
+void ADC_config(void)
+{
+    ADC_InitTypeDef		ADC_InitStructure;		//结构定义
+    ADC_InitStructure.ADC_SMPduty   = 31;		//ADC 模拟信号采样时间控制, 0~31（注意： SMPDUTY 一定不能设置小于 10）
+    ADC_InitStructure.ADC_CsSetup   = 0;		//ADC 通道选择时间控制 0(默认),1
+    ADC_InitStructure.ADC_CsHold    = 1;		//ADC 通道选择保持时间控制 0,1(默认),2,3
+    ADC_InitStructure.ADC_Speed     = ADC_SPEED_2X1T;		//设置 ADC 工作时钟频率	ADC_SPEED_2X1T~ADC_SPEED_2X16T
+    ADC_InitStructure.ADC_Power     = ENABLE;				//ADC功率允许/关闭	ENABLE,DISABLE
+    ADC_InitStructure.ADC_AdjResult = ADC_RIGHT_JUSTIFIED;	//ADC结果调整,	ADC_LEFT_JUSTIFIED,ADC_RIGHT_JUSTIFIED
+    ADC_InitStructure.ADC_Priority    = Priority_0;			//指定中断优先级(低到高) Priority_0,Priority_1,Priority_2,Priority_3
+    ADC_InitStructure.ADC_Interrupt = DISABLE;			//中断允许	ENABLE,DISABLE
+    ADC_Inilize(&ADC_InitStructure);					//初始化
+    ADC_PowerControl(ENABLE);							//单独的ADC电源操作函数, ENABLE或DISABLE
+}
+
+void NTC_init() {
+		GPIO_config();
+		ADC_config();
+}
+
+//查找函数
+int search(float r) {
+    //数组遍历
+    //返回下标
+    int i, minIdx;
+    float min = temp_table[0] > r ? temp_table[0] - r : r - temp_table[0];
+    minIdx = 0;
+    for(i=0; i < sizeof(temp_table) / sizeof(u16); i++) {
+        //通过r和每一个进行比对，找到相近的值
+        if(min > (temp_table[i] > r ? temp_table[i] - r : r - temp_table[i])) {
+            min = temp_table[i] > r ? temp_table[i] - r : r - temp_table[i];
+                  minIdx = i;
+        }
+    }
+    return minIdx;
+}
+
+int NTC_get_temperature() {
+    u16 result;
+    float v;//定义电压值
+    float r;//热敏电阻阻值
+    int t;//温度
+
+    //channel是通道,可在.h文件中查找
+    //引用.h文件中的ADC函数
+    result = Get_ADCResult(ADC_CH12);
+
+    //转换成具体的电压值,基准电压以数据手册为准
+    //电压值=采样值x基准电压/基准值
+    v = (result * 2.5)/4096;
+
+    //热敏电阻阻值=热敏电阻电压 x 10K / （VCC-热敏电阻电压）
+    r = v * 10 / (3.3 - v) * 100;//因为要放大，所以后面乘以100
+
+    //将阻值转换为温度
+    //通过阻值查表，找到下标，下标-55就是温度
+    t = search(r) - 55;
+    return T;
+}
