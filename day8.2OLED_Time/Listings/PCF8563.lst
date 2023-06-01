@@ -1,0 +1,218 @@
+C51 COMPILER V9.60.7.0   PCF8563                                                           04/20/2023 09:24:21 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE PCF8563
+OBJECT MODULE PLACED IN .\Objects\PCF8563.obj
+COMPILER INVOKED BY: D:\instal\Keil_v5\C51\BIN\C51.EXE PCF8563.c LARGE OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT
+                    -(.\Listings\PCF8563.lst) TABS(2) OBJECT(.\Objects\PCF8563.obj)
+
+line level    source
+
+   1          #include "PCF8563.h"
+   2          #include <stdio.h>
+   3          
+   4          
+   5          void PCF8563_init() {
+   6   1      }
+   7          
+   8          //读时间
+   9          //写时间
+  10          //获取时间：年月日星期时分秒
+  11          void PCF8563_set_clock(Clock_t c) {
+  12   1          u8 p[7];
+  13   1          u8 x;
+  14   1          // second
+  15   1          p[0] = (c.second % 10) + ((c.second / 10) << 4);
+  16   1          // minute
+  17   1          p[1] = (c.minute % 10) + ((c.minute / 10) << 4);
+  18   1          // hour
+  19   1          p[2] = (c.hour % 10) + ((c.hour / 10) << 4);
+  20   1          // day
+  21   1          p[3] = (c.day % 10) + ((c.day / 10) << 4);
+  22   1          // weekday
+  23   1          p[4] = c.weekday;
+  24   1          // month
+  25   1          x = c.year >= 2000 ? 1 : 0;
+  26   1          p[5] = (c.month % 10) + ((c.month / 10) << 4) + (x << 7);
+  27   1          // year
+  28   1          p[6] = (c.year % 10) + ((c.year % 100 / 10) << 4);
+  29   1      
+  30   1          I2C_WRITE(PCF8563_ADDR, PCF8563_REG_TD, p, 7);
+  31   1      }
+  32          
+  33          void PCF8563_get_clock(Clock_t *c) {
+  34   1          u8 p[7];
+  35   1          u8 x;
+  36   1          // addr：寄存器地址
+  37   1          //ReadNbyte(addr, p, number);
+  38   1          I2C_READ(PCF8563_ADDR, PCF8563_REG_TD, p, 7);
+  39   1      
+  40   1          // second     个位          十位
+  41   1          //second = (p[0] & 0x0F) + ((p[0] & 0x70) >> 4) * 10;
+  42   1          c->second = (p[0] & 0x0F) + ((p[0] >> 4) & 0x07) * 10;
+  43   1      
+  44   1          // minute
+  45   1          c->minute = (p[1] & 0x0F) + ((p[1] >> 4) & 0x07) * 10;
+  46   1      
+  47   1          // hour
+  48   1          c->hour = (p[2] & 0x0F) + ((p[2] >> 4) & 0x03) * 10;
+  49   1      
+  50   1          // day
+  51   1          c->day = (p[3] & 0x0F) + ((p[3] >> 4) & 0x03) * 10;
+  52   1      
+  53   1          // weekday
+  54   1          c->weekday = p[4] & 0x07;
+C51 COMPILER V9.60.7.0   PCF8563                                                           04/20/2023 09:24:21 PAGE 2   
+
+  55   1      
+  56   1          // month
+  57   1          c->month = (p[5] & 0x0F) + ((p[5] >> 4) & 0x01) * 10;
+  58   1          x = p[5] >> 7;
+  59   1      
+  60   1          // year
+  61   1          c->year = (p[6] & 0x0F) + (p[6] >> 4) * 10 + (x == 0 ? 1900 : 2000);
+  62   1      }
+  63          
+  64          void PCF8563_enable_alarm() {
+  65   1          u8 p;
+  66   1          I2C_ReadNbyte(PCF8563_ADDR, PCF8563_REG_CS2, &p, 1);
+  67   1          p |= 0x02;// 开启 alarm IE
+  68   1          p |= 0x10;// TI_PI
+  69   1          p &= ~0x08;// 清理 alarm flag
+  70   1          I2C_WriteNbyte(PCF8563_ADDR, PCF8563_REG_CS2, &p, 1);
+  71   1      
+  72   1          I2C_ReadNbyte(PCF8563_ADDR, PCF8563_REG_CS2, &p, 1);
+  73   1          printf("alarm: %d\r\n", (int)p);
+  74   1      }
+  75          
+  76          void PCF8563_set_alarm(Alarm_t a) {
+  77   1          u8 tmp[4];
+  78   1          // 设置alarm， minute，hour，day， weekday
+  79   1          // minute   个位    十位      enable(0x80 关闭，0开启)
+  80   1          tmp[0] = (a.minute % 10) + ((a.minute / 10) << 4) + ((a.enable_minute == 1) ? 0: 0x80);
+  81   1      
+  82   1          // hour   个位    十位      enable(0x80 关闭，0开启)
+  83   1          tmp[1] = (a.hour % 10) + ((a.hour / 10) << 4) + ((a.enable_hour == 1) ? 0: 0x80);
+  84   1      
+  85   1          // day    个位    十位      enable(0x80 关闭，0开启)
+  86   1          tmp[2] = (a.day % 10) + ((a.day / 10) << 4) + ((a.enable_day == 1) ? 0: 0x80);
+  87   1      
+  88   1          // weekday    个位    十位      enable(0x80 关闭，0开启)
+  89   1          tmp[3] = a.weekday + ((a.enable_weekday == 1) ? 0: 0x80);
+  90   1          I2C_WriteNbyte(0x51, 0x09, &tmp, 4);
+  91   1      }
+  92          
+  93          
+  94          void PCF8563_get_alarm(Alarm_t *a) {
+  95   1      
+  96   1      }
+*** WARNING C280 IN LINE 94 OF PCF8563.c: 'a': unreferenced local variable
+  97          
+  98          void PCF8563_disable_alarm() {
+  99   1          u8 p;
+ 100   1          I2C_ReadNbyte(PCF8563_ADDR, PCF8563_REG_CS2, &p, 1);
+ 101   1          p &= ~0x02;// 关闭 alarm IE
+ 102   1          p &= ~0x08;// 清理 alarm flag
+ 103   1          I2C_WriteNbyte(PCF8563_ADDR, PCF8563_REG_CS2, &p, 1);
+ 104   1      }
+ 105          
+ 106          void PCF8563_enable_timer() {
+ 107   1          u8 p;
+ 108   1          I2C_ReadNbyte(0x51, 0x01, &p, 1);
+ 109   1          p |= 0x01;// 开启 timer IE
+ 110   1          p |= 0x10;
+ 111   1          p &= ~0x04;// 清理 timer flag
+ 112   1          I2C_WriteNbyte(PCF8563_ADDR, PCF8563_REG_CS2, &p, 1);
+ 113   1      
+ 114   1          // timer位的enable控制
+ 115   1          I2C_ReadNbyte(0x51, 0x0E, &p, 1);
+C51 COMPILER V9.60.7.0   PCF8563                                                           04/20/2023 09:24:21 PAGE 3   
+
+ 116   1          p |= 0x80;
+ 117   1          I2C_WriteNbyte(0x51, 0x0E, &p, 1);
+ 118   1      
+ 119   1          I2C_ReadNbyte(PCF8563_ADDR, PCF8563_REG_CS2, &p, 1);
+ 120   1          printf("timer: %d\r\n", (int)p);
+ 121   1      }
+ 122          void PCF8563_set_timer(Timer_t t) {
+ 123   1          u8 p;
+ 124   1          I2C_ReadNbyte(0x51, 0x0E, &p, 1);
+ 125   1          p |= t.src_clk;//timer source clock frequency, enable
+ 126   1          I2C_WriteNbyte(0x51, 0x0E, &p, 1);
+ 127   1      
+ 128   1          p = t.countdown;// countdown period in seconds
+ 129   1          I2C_WriteNbyte(0x51, 0x0F, &p, 1);
+ 130   1      }
+ 131          void PCF8563_get_timer(Timer_t *t) {
+ 132   1      }
+*** WARNING C280 IN LINE 131 OF PCF8563.c: 't': unreferenced local variable
+ 133          void PCF8563_disable_timer() {
+ 134   1          u8 p;
+ 135   1          I2C_ReadNbyte(0x51, 0x01, &p, 1);
+ 136   1          p &= ~0x01;// 关闭 timer IE
+ 137   1          p &= ~0x04;// 清理 timer flag
+ 138   1          I2C_WriteNbyte(PCF8563_ADDR, PCF8563_REG_CS2, &p, 1);
+ 139   1      
+ 140   1          // timer位上disable
+ 141   1          I2C_ReadNbyte(0x51, 0x0E, &p, 1);
+ 142   1          p &= ~0x80;
+ 143   1          I2C_WriteNbyte(0x51, 0x0E, &p, 1);
+ 144   1      }
+ 145          
+ 146          void  Ext_int3_call() {
+ 147   1          // alarm 回调
+ 148   1          u8 p;
+ 149   1          // 驱动逻辑：固定的
+ 150   1          // 读取当前 控制寄存器的值
+ 151   1          I2C_ReadNbyte(0x51, 0x01, &p, 1);
+ 152   1          printf("call: %d \r\n", (int)p);
+ 153   1      
+ 154   1      #ifdef PCF8563_ENABLE_ALARM
+              
+                  // 如果时Alarm触发的中断，就去清理alarm的flag
+                  if(p & 0x08) {
+                      // 清理Alarm Flag
+                      p &= ~0x08;// 清理flag状态
+                      I2C_WriteNbyte(0x51, 0x01, &p, 1);
+              
+                      // 用户逻辑：非固定的，由业务决定
+                      //printf("alarm \r\n");
+                      PCF8563_on_alarm();
+                  }
+              
+              #endif
+ 168   1      
+ 169   1      #ifdef PCF8563_ENABLE_TIMER
+                  // 如果是timer触发的中断，就去清理alarm的flag
+                  if(p & 0x04) {
+                      // timer 的回调
+                      // 清理timer Flag
+                      p &= ~0x04;// 清理flag状态
+                      I2C_WriteNbyte(0x51, 0x01, &p, 1);
+              
+C51 COMPILER V9.60.7.0   PCF8563                                                           04/20/2023 09:24:21 PAGE 4   
+
+                      I2C_ReadNbyte(0x51, 0x0F, &p, 1);
+                      printf("cnt: %d \r\n", (int)p);
+              
+                      PCF8563_on_timer();
+                  }
+              #endif
+ 183   1      
+ 184   1      
+ 185   1      
+ 186   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1146    ----
+   CONSTANT SIZE    =     36    ----
+   XDATA SIZE       =   ----      51
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  2 WARNING(S),  0 ERROR(S)
