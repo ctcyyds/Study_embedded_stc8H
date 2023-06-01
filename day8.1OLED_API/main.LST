@@ -1,0 +1,101 @@
+C51 COMPILER V9.60.7.0   MAIN                                                              04/20/2023 11:06:02 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: D:\instal\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE INCDIR(.\SRC) DEBUG OBJECTEXTEND 
+                    -TABS(2)
+
+line level    source
+
+   1          //////////////////////////////////////////////////////////////////////////////////
+   2          //本程序只供学习使用，未经作者许可，不得用于其它任何用途
+   3          //中景园电子
+   4          //店铺地址：http://shop73023976.taobao.com/?spm=2013.1.0.0.M4PqC2
+   5          //
+   6          //  文 件 名   : main.c
+   7          //  版 本 号   : v2.0
+   8          //  作    者   : HuangKai
+   9          //  生成日期   : 2014-0101
+  10          //  最近修改   :
+  11          //  功能描述   : OLED 4接口演示例程(51系列)
+  12          //              说明:
+  13          //              ----------------------------------------------------------------
+  14          //              GND    电源地
+  15          //              VCC  接5V或3.3v电源
+  16          //              SCL  P10（SCL）
+  17          //              SDA  P11（SDA）
+  18          //              RES  P12 注：SPI接口显示屏改成IIC接口时需要接RES引脚
+  19          //                           IIC接口显示屏用户请忽略
+  20          //              ----------------------------------------------------------------
+  21          // 修改历史   :
+  22          // 日    期   :
+  23          // 作    者   : HuangKai
+  24          // 修改内容   : 创建文件
+  25          //版权所有，盗版必究。
+  26          //Copyright(C) 中景园电子2014/3/16
+  27          //All rights reserved
+  28          //******************************************************************************/
+  29          //#include "REG51.h"
+  30          #include "config.h"
+  31          #include "oled.h"
+  32          #include "bmp.h"
+  33          
+  34          int main(void)
+  35          {
+  36   1          //GPIO初始化
+  37   1          P0M1 = 0;
+  38   1          P0M0 = 0;
+  39   1          P1M1 = 0;
+  40   1          P1M0 = 0;
+  41   1          P2M1 = 0;
+  42   1          P2M0 = 0;
+  43   1          P3M1 = 0;
+  44   1          P3M0 = 0;
+  45   1          P4M1 = 0;
+  46   1          P4M0 = 0;
+  47   1          P5M1 = 0;
+  48   1          P5M0 = 0;
+  49   1          P6M1 = 0;
+  50   1          P6M0 = 0;
+  51   1          P7M1 = 0;
+  52   1          P7M0 = 0;
+  53   1          EA = 1;
+  54   1          OLED_Init();//初始化OLED
+C51 COMPILER V9.60.7.0   MAIN                                                              04/20/2023 11:06:02 PAGE 2   
+
+  55   1          OLED_ColorTurn(0);//0正常显示，1 反色显示
+  56   1          OLED_DisplayTurn(0);//0正常显示 1 屏幕翻转显示
+  57   1          while(1)
+  58   1          {
+  59   2              /**OLED_ShowChar(0,0,'a',16);
+  60   2              OLED_ShowNum(0,2,2023,4,16);
+  61   2              OLED_ShowString(0,4,"Hello word!",16);
+  62   2              OLED_DrawBMP(0,0,128, 64,BMP2);**/
+  63   2              OLED_ShowChinese(0,2,0,16);
+  64   2              OLED_ShowChinese(10,2,1,16);
+  65   2              OLED_ShowChinese(36,2,2,16);
+  66   2              OLED_ShowChinese(56,2,3,16);
+  67   2              OLED_ShowChinese(76,2,4,16);
+  68   2            OLED_ShowChar(30,4,'Y',16);
+  69   2            OLED_ShowChar(50 ,4,'Y',16);
+  70   2            OLED_ShowChar(70 ,4,'D',16);
+  71   2            OLED_ShowChar(90 ,4,'S',16);
+  72   2          }
+  73   1      
+  74   1      }
+  75          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    157    ----
+   CONSTANT SIZE    =   2023    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

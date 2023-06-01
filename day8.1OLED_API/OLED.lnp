@@ -1,0 +1,6 @@
+"STARTUP.obj",
+"main.obj",
+"oled.obj",
+"GPIO.obj" 
+TO "OLED" 
+RAMSIZE(256) 
