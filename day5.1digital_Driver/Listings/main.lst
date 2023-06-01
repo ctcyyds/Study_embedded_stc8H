@@ -1,0 +1,124 @@
+C51 COMPILER V9.60.7.0   MAIN                                                              04/15/2023 20:48:08 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\instal\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listin
+                    -gs\main.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include "config.h"
+   2          #include "GPIO.h"
+   3          #include "UART.h"
+   4          #include "delay.h"
+   5          
+   6          #define NIX_DI P44
+   7          // 锁存byte
+   8          #define NIX_RCK P43
+   9          // 移位bit
+  10          #define NIX_SCK P42
+  11          
+  12          // GPIO initialize
+  13          void GPIO_config(void)
+  14          {
+  15   1          GPIO_InitTypeDef GPIO_InitStructure;                           // 结构定义
+  16   1          GPIO_InitStructure.Mode = GPIO_PullUp;                         // IO模式，GPIO_PullUp,GPIO_HighZ,GPIO_
+             -OUT_OD,GPIO_OUT_PP
+  17   1          GPIO_InitStructure.Pin = GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_4; // 指定要初始化的IO
+  18   1          GPIO_Inilize(GPIO_P4, &GPIO_InitStructure);                    // 初始化
+  19   1      }
+  20          
+  21          //UART initialize
+  22          void UART_config(void) {
+  23   1          COMx_InitDefine        COMx_InitStructure;                    //结构定义
+  24   1          COMx_InitStructure.UART_Mode      = UART_8bit_BRTx;    //模式, UART_ShiftRight,UART_8bit_BRTx,UART_9bi
+             -t,UART_9bit_BRTx
+  25   1          COMx_InitStructure.UART_BRT_Use   = BRT_Timer1;            //选择波特率发生器, BRT_Timer1, BRT_Timer2 
+             -(注意: 串口2固定使用BRT_Timer2)
+  26   1          COMx_InitStructure.UART_BaudRate  = 115200ul;            //波特率, 一般 110 ~ 115200
+  27   1          COMx_InitStructure.UART_RxEnable  = ENABLE;                //接收允许,   ENABLE或DISABLE
+  28   1          COMx_InitStructure.BaudRateDouble = DISABLE;            //波特率加倍, ENABLE或DISABLE
+  29   1          COMx_InitStructure.UART_Interrupt = ENABLE;                //中断允许,   ENABLE或DISABLE
+  30   1          COMx_InitStructure.UART_Priority  = Priority_0;            //指定中断优先级(低到高) Priority_0,Priorit
+             -y_1,Priority_2,Priority_3
+  31   1          COMx_InitStructure.UART_P_SW      = UART1_SW_P30_P31;    //切换端口,   UART1_SW_P30_P31,UART1_SW_P36_P
+             -37,UART1_SW_P16_P17,UART1_SW_P43_P44
+  32   1          UART_Configuration(UART1, &COMx_InitStructure);        //初始化串口1 UART1,UART2,UART3,UART4
+  33   1      }
+  34          
+  35          int main()
+  36          {
+  37   1          u8 i;
+  38   1          u8 a, b;
+  39   1          GPIO_config();
+  40   1          UART_config();
+  41   1          EA = 1;
+  42   1          // 数据
+  43   1          a = 0x80;
+  44   1          // 地址
+  45   1          b = 0x20;
+  46   1      
+  47   1          while (1)
+  48   1          {
+  49   2              // 将byte转换为高低电平输入
+C51 COMPILER V9.60.7.0   MAIN                                                              04/15/2023 20:48:08 PAGE 2   
+
+  50   2              for (i = 0; i < 8; i++)
+  51   2              {
+  52   3                  if (a & (1 << (7 - i)))
+  53   3                  {
+  54   4                      // high level
+  55   4                      NIX_DI = 1;
+  56   4                  }
+  57   3                  else
+  58   3                  {
+  59   4                      // low level
+  60   4                      NIX_DI = 0;
+  61   4                  }
+  62   3      
+  63   3                  NIX_SCK = 0;
+  64   3                  NOP2();
+  65   3                  NIX_SCK = 1;
+  66   3                  NOP2();
+  67   3              }
+  68   2      
+  69   2              for (i = 0; i < 8; i++)
+  70   2              {
+  71   3                  if (b & (1 << (7 - i)))
+  72   3                  {
+  73   4                      // high level
+  74   4                      NIX_DI = 1;
+  75   4                  }
+  76   3                  else
+  77   3                  {
+  78   4                      // low level
+  79   4                      NIX_DI = 0;
+  80   4                  }
+  81   3      
+  82   3                  NIX_SCK = 0;
+  83   3                  NOP2();
+  84   3                  NIX_SCK = 1;
+  85   3                  NOP2();
+  86   3              }
+  87   2              NIX_RCK = 0;
+  88   2              NOP2();
+  89   2              NIX_RCK = 1;
+  90   2              NOP2();
+  91   2              delay_ms(100);
+  92   2          }
+  93   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    184    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----      16
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
