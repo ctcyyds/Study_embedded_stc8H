@@ -1,0 +1,32 @@
+#include "RTX51TNY.H"
+#include <STC8H.H>
+
+//定义我的程序入口
+void start() _task_ 0{
+	os_create_task(1);
+	os_create_task(2);
+	os_delete_task(0);
+}
+void task1() _task_ 1{
+    P5M0 = 0;
+    P5M1 = 0;
+    while(1) {
+        P53 = 0;
+        os_wait2(K_TMO,200);
+        P53 = 1;
+        os_wait2(K_TMO,200);
+    }
+}
+
+void task2() _task_ 2{
+    P4M0 = 0;
+    P4M1 = 0;
+    P2M0 = 0;
+    P2M1 = 0;
+    while(1) {
+        P27 = 0;
+        os_wait2(K_TMO,200);
+        P27 = 1;
+        os_wait2(K_TMO,200);
+    }
+}
