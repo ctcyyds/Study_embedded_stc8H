@@ -1,0 +1,60 @@
+C51 COMPILER V9.60.7.0   BUZZER                                                            05/09/2023 15:51:25 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE BUZZER
+OBJECT MODULE PLACED IN .\Objects\Buzzer.obj
+COMPILER INVOKED BY: D:\instal\Keil_v5\C51\BIN\C51.EXE Buzzer.c LARGE OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(
+                    -.\Listings\Buzzer.lst) TABS(2) OBJECT(.\Objects\Buzzer.obj)
+
+line level    source
+
+   1          #include "Buzzer.h"
+   2          
+   3          u16 HZS[] = {
+   4              1047, 1175, 1319, 1397, 1568, 1760, 1976, 2093};
+   5          
+   6          void Buzzer_init()
+   7          {
+   8   1          BUZZER_PIN_INIT();
+   9   1      }
+  10          
+  11          void Buzzer_music(u8 note)
+  12          { // 确定PWM的周期
+  13   1          // 确定PWM的占空比
+  14   1          // note --> hz
+  15   1          u16 hz = HZS[note - 1];
+  16   1          u16 PERIOD = (MAIN_Fosc / hz - 1);
+  17   1          PWMx_InitDefine PWMx_InitStructure;
+  18   1          // 总配置
+  19   1          PWMx_InitStructure.PWM_Period =PERIOD; // 周期时间,   0~65535
+  20   1          PWMx_InitStructure.PWM_DeadTime = 0;                  // 死区发生器设置, 0~255
+  21   1          PWMx_InitStructure.PWM_EnoSelect = ENO5P;             // 输出通道选择,  ENO1P,ENO1N,ENO2P,ENO2N,ENO3P,E
+             -NO3N,ENO4P,ENO4N / ENO5P,ENO6P,ENO7P,ENO8P
+  22   1          PWMx_InitStructure.PWM_PS_SW = PWM5_SW_P00;           // 切换端口
+  23   1          // 具体PWM端口配置 PWM6
+  24   1          PWMx_InitStructure.PWM5_Mode = CCMRn_PWM_MODE1; // 模式,    CCMRn_FREEZE,CCMRn_MATCH_VALID,CCMRn_MATCH_I
+             -NVALID,CCMRn_ROLLOVER,CCMRn_FORCE_INVALID,CCMRn_FORCE_VALID,CCMRn_PWM_MODE1,CCMRn_PWM_MODE2
+  25   1          PWMx_InitStructure.PWM5_Duty = PERIOD / 2;      // PWM6占空比时间, 0~Period
+  26   1      
+  27   1          // PWM6
+  28   1          PWMx_InitStructure.PWM_CC5Enable = ENABLE; // 开启PWM4P输入捕获/比较输出,  ENABLE,DISABLE
+  29   1      
+  30   1          // PWM启动配置
+  31   1          PWMx_InitStructure.PWM_MainOutEnable = ENABLE; // 主输出使能, ENABLE,DISABLE
+  32   1          PWMx_InitStructure.PWM_CEN_Enable = ENABLE;    // 使能计数器, ENABLE,DISABLE
+  33   1          PWM_Configuration(PWMB, &PWMx_InitStructure);  // 初始化PWM,  PWMA,PWMB
+  34   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    114    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =     16      52
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
