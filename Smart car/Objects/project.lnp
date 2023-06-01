@@ -1,0 +1,11 @@
+".\Objects\main.obj",
+".\Objects\GPIO.obj",
+".\Objects\PWM.obj",
+".\Objects\UART.obj",
+".\Objects\Conf_tny.obj",
+".\OS\RTX51TNY.LIB",
+".\Objects\Key.obj",
+".\Objects\Motors.obj",
+".\Objects\Track.obj" 
+TO ".\Objects\project" Rtx51Tiny 
+PRINT(".\Listings\project.m51") RAMSIZE(256) 

@@ -1,0 +1,103 @@
+C51 COMPILER V9.60.7.0   TRACK                                                             04/30/2023 15:48:03 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE TRACK
+OBJECT MODULE PLACED IN .\Objects\Track.obj
+COMPILER INVOKED BY: D:\instal\Keil_v5\C51\BIN\C51.EXE Driver\Track.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(.\Lib;.\Driv
+                    -er) DEBUG OBJECTEXTEND PRINT(.\Listings\Track.lst) TABS(2) OBJECT(.\Objects\Track.obj)
+
+line level    source
+
+   1          #include "Track.h"
+   2          
+   3          static int last_pos;
+   4          void Track_init() {
+   5   1        TRACK_PIN_INIT();
+   6   1      }
+   7          
+   8          void Track_get_state(u8 *state) {
+   9   1        if(TRACK_0 == 0) {
+  10   2          // b0 1
+  11   2          *state |= 0x01;
+  12   2        } else {
+  13   2          // b0 0
+  14   2          *state &= ~0x01;
+  15   2        }
+  16   1        if(TRACK_1 == 0) {
+  17   2          // b1 1
+  18   2          *state |= 0x02;
+  19   2        } else {
+  20   2          // b1 0
+  21   2          *state &= ~0x02;
+  22   2        }
+  23   1        if(TRACK_2 == 0) {
+  24   2          // b2 1
+  25   2          *state |= 0x04;
+  26   2        } else {
+  27   2          // b2 0
+  28   2          *state &= ~0x04;
+  29   2        }
+  30   1        if(TRACK_3 == 0) {
+  31   2          // b3 1
+  32   2          *state |= 0x08;
+  33   2        } else {
+  34   2          // b3 0
+  35   2          *state &= ~0x08;
+  36   2        }
+  37   1        if(TRACK_4 == 0) {
+  38   2          // b4 1
+  39   2          *state |= 0x10;
+  40   2        } else {
+  41   2          // b4 0
+  42   2          *state &= ~0x10;
+  43   2        }
+  44   1      }
+  45          
+  46          void Track_get_position(int *pos) {
+  47   1        int sum = 0;
+  48   1        int cnt = 0;
+  49   1        if(TRACK_0 == 1) {
+  50   2          sum += 64;
+  51   2          cnt++;
+  52   2        }
+  53   1        if(TRACK_1 == 1) {
+  54   2          sum += 32;
+C51 COMPILER V9.60.7.0   TRACK                                                             04/30/2023 15:48:03 PAGE 2   
+
+  55   2          cnt++;
+  56   2        }
+  57   1        if(TRACK_2 == 1) {
+  58   2          sum += 0;
+  59   2          cnt++;
+  60   2        }
+  61   1        if(TRACK_3 == 1) {
+  62   2          sum += -32;
+  63   2          cnt++;
+  64   2        }
+  65   1        if(TRACK_4 == 1) {
+  66   2          sum += -64;
+  67   2          cnt++;
+  68   2        }
+  69   1        
+  70   1        if(cnt == 0) {
+  71   2          // pos, 位置为上一次的位置
+  72   2          *pos = last_pos;
+  73   2        } else {
+  74   2          last_pos = sum / cnt;
+  75   2          *pos = last_pos;
+  76   2        }
+  77   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    359    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =      2       8
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

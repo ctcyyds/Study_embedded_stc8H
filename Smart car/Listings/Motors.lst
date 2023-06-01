@@ -1,0 +1,262 @@
+C51 COMPILER V9.60.7.0   MOTORS                                                            04/30/2023 15:48:03 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MOTORS
+OBJECT MODULE PLACED IN .\Objects\Motors.obj
+COMPILER INVOKED BY: D:\instal\Keil_v5\C51\BIN\C51.EXE Driver\Motors.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(.\Lib;.\Dri
+                    -ver) DEBUG OBJECTEXTEND PRINT(.\Listings\Motors.lst) TABS(2) OBJECT(.\Objects\Motors.obj)
+
+line level    source
+
+   1          #include "Motors.h"
+   2          
+   3          typedef struct {
+   4              u8 enable;//总开关
+   5              u8 lq_enable;
+   6              u8 lh_enable;
+   7              u8 rq_enable;
+   8              u8 rh_enable;
+   9              u8 lq_duty;
+  10              u8 lh_duty;
+  11              u8 rq_duty;
+  12              u8 rh_duty;
+  13          } MotorCfg;
+  14          
+  15          static void Motors_config(MotorCfg cfg) {
+  16   1          PWMx_InitDefine   PWMx_InitStructure;
+  17   1          // 总配置
+  18   1          PWMx_InitStructure.PWM_Period       = PERIOD; //周期时间,   0~65535
+  19   1          PWMx_InitStructure.PWM_DeadTime     = 0;                //死区发生器设置, 0~255
+  20   1          PWMx_InitStructure.PWM_EnoSelect    = 0;//输出通道选择, ENO1P,ENO1N,ENO2P,ENO2N,ENO3P,ENO3N,ENO4P,ENO4N 
+             -/ ENO5P,ENO6P,ENO7P,ENO8P
+  21   1          PWMx_InitStructure.PWM_PS_SW        = 0;//切换端口
+  22   1      
+  23   1          //////////////// LQ
+  24   1          if(cfg.lq_enable) {
+  25   2              PWMx_InitStructure.PWM_EnoSelect    |= ENO4P; //输出通道选择, ENO1P,ENO1N,ENO2P,ENO2N,ENO3P,ENO3N,EN
+             -O4P,ENO4N / ENO5P,ENO6P,ENO7P,ENO8P
+  26   2              PWMx_InitStructure.PWM_EnoSelect    |= ENO4N;
+  27   2              PWMx_InitStructure.PWM_PS_SW        |= PWM4_SW_P16_P17;//切换端口
+  28   2          } else {
+  29   2              PWMx_InitStructure.PWM_EnoSelect    &= ~ENO4P;  //输出通道选择, ENO1P,ENO1N,ENO2P,ENO2N,ENO3P,ENO3N,E
+             -NO4P,ENO4N / ENO5P,ENO6P,ENO7P,ENO8P
+  30   2              PWMx_InitStructure.PWM_EnoSelect    &= ~ENO4N;
+  31   2              PWMx_InitStructure.PWM_PS_SW        &= ~PWM4_SW_P16_P17;//切换端口
+  32   2          }
+  33   1          PWMx_InitStructure.PWM_CC4Enable   = cfg.lq_enable ? ENABLE : DISABLE;//开启PWM4P输入捕获/比较输出,  E
+             -NABLE,DISABLE
+  34   1          PWMx_InitStructure.PWM_CC4NEnable  = cfg.lq_enable ? ENABLE : DISABLE;//开启PWM4N输入捕获/比较输出,  E
+             -NABLE,DISABLE
+  35   1          // pwm4
+  36   1          PWMx_InitStructure.PWM4_Mode        = CCMRn_PWM_MODE1;  //模式,   CCMRn_FREEZE,CCMRn_MATCH_VALID,CCMRn_MAT
+             -CH_INVALID,CCMRn_ROLLOVER,CCMRn_FORCE_INVALID,CCMRn_FORCE_VALID,CCMRn_PWM_MODE1,CCMRn_PWM_MODE2
+  37   1          PWMx_InitStructure.PWM4_SetPriority = Priority_0;     //指定中断优先级(低到高) Priority_0,Priority_1,Pri
+             -ority_2,Priority_3
+  38   1          PWMx_InitStructure.PWM4_Duty        = cfg.lq_duty * PERIOD / 100;//PWM4占空比时间, 0~Period
+  39   1      
+  40   1          //////////////// RQ
+  41   1          if(cfg.rq_enable) {
+  42   2              PWMx_InitStructure.PWM_EnoSelect    |= ENO3P; //输出通道选择, ENO1P,ENO1N,ENO2P,ENO2N,ENO3P,ENO3N,EN
+             -O4P,ENO4N / ENO5P,ENO6P,ENO7P,ENO8P
+  43   2              PWMx_InitStructure.PWM_EnoSelect    |= ENO3N;
+  44   2              PWMx_InitStructure.PWM_PS_SW        |= PWM3_SW_P14_P15;//切换端口
+  45   2          } else {
+  46   2              PWMx_InitStructure.PWM_EnoSelect    &= ~ENO3P;  //输出通道选择, ENO1P,ENO1N,ENO2P,ENO2N,ENO3P,ENO3N,E
+C51 COMPILER V9.60.7.0   MOTORS                                                            04/30/2023 15:48:03 PAGE 2   
+
+             -NO4P,ENO4N / ENO5P,ENO6P,ENO7P,ENO8P
+  47   2              PWMx_InitStructure.PWM_EnoSelect    &= ~ENO3N;
+  48   2              PWMx_InitStructure.PWM_PS_SW        &= ~PWM3_SW_P14_P15;//切换端口
+  49   2          }
+  50   1          PWMx_InitStructure.PWM_CC3Enable   = cfg.rq_enable ? ENABLE : DISABLE;//开启PWM4P输入捕获/比较输出,  E
+             -NABLE,DISABLE
+  51   1          PWMx_InitStructure.PWM_CC3NEnable  = cfg.rq_enable ? ENABLE : DISABLE;//开启PWM4N输入捕获/比较输出,  E
+             -NABLE,DISABLE
+  52   1          // pwm3
+  53   1          PWMx_InitStructure.PWM3_Mode        = CCMRn_PWM_MODE2;  //模式,   CCMRn_FREEZE,CCMRn_MATCH_VALID,CCMRn_MAT
+             -CH_INVALID,CCMRn_ROLLOVER,CCMRn_FORCE_INVALID,CCMRn_FORCE_VALID,CCMRn_PWM_MODE1,CCMRn_PWM_MODE2
+  54   1          PWMx_InitStructure.PWM3_SetPriority = Priority_0;     //指定中断优先级(低到高) Priority_0,Priority_1,Pri
+             -ority_2,Priority_3
+  55   1          PWMx_InitStructure.PWM3_Duty        = cfg.rq_duty * PERIOD / 100;//PWM4占空比时间, 0~Period
+  56   1      
+  57   1          //////////////// LH
+  58   1          if(cfg.lh_enable) {
+  59   2              PWMx_InitStructure.PWM_EnoSelect    |= ENO1P; //输出通道选择, ENO1P,ENO1N,ENO2P,ENO2N,ENO3P,ENO3N,EN
+             -O4P,ENO4N / ENO5P,ENO6P,ENO7P,ENO8P
+  60   2              PWMx_InitStructure.PWM_EnoSelect    |= ENO1N;
+  61   2              PWMx_InitStructure.PWM_PS_SW        |= PWM1_SW_P20_P21;//切换端口
+  62   2          } else {
+  63   2              PWMx_InitStructure.PWM_EnoSelect    &= ~ENO1P;  //输出通道选择, ENO1P,ENO1N,ENO2P,ENO2N,ENO3P,ENO3N,E
+             -NO4P,ENO4N / ENO5P,ENO6P,ENO7P,ENO8P
+  64   2              PWMx_InitStructure.PWM_EnoSelect    &= ~ENO1N;
+  65   2              PWMx_InitStructure.PWM_PS_SW        &= ~PWM1_SW_P20_P21;//切换端口
+  66   2          }
+  67   1          PWMx_InitStructure.PWM_CC1Enable   = cfg.lh_enable ? ENABLE : DISABLE;//开启PWM4P输入捕获/比较输出,  E
+             -NABLE,DISABLE
+  68   1          PWMx_InitStructure.PWM_CC1NEnable  = cfg.lh_enable ? ENABLE : DISABLE;//开启PWM4N输入捕获/比较输出,  E
+             -NABLE,DISABLE
+  69   1          // pwm1
+  70   1          PWMx_InitStructure.PWM1_Mode        = CCMRn_PWM_MODE2;  //模式,   CCMRn_FREEZE,CCMRn_MATCH_VALID,CCMRn_MAT
+             -CH_INVALID,CCMRn_ROLLOVER,CCMRn_FORCE_INVALID,CCMRn_FORCE_VALID,CCMRn_PWM_MODE1,CCMRn_PWM_MODE2
+  71   1          PWMx_InitStructure.PWM1_SetPriority = Priority_0;     //指定中断优先级(低到高) Priority_0,Priority_1,Pri
+             -ority_2,Priority_3
+  72   1          PWMx_InitStructure.PWM1_Duty        = cfg.lh_duty * PERIOD / 100;//PWM4占空比时间, 0~Period
+  73   1      
+  74   1          //////////////// RH
+  75   1          if(cfg.rh_enable) {
+  76   2              PWMx_InitStructure.PWM_EnoSelect    |= ENO2P; //输出通道选择, ENO1P,ENO1N,ENO2P,ENO2N,ENO3P,ENO3N,EN
+             -O4P,ENO4N / ENO5P,ENO6P,ENO7P,ENO8P
+  77   2              PWMx_InitStructure.PWM_EnoSelect    |= ENO2N;
+  78   2              PWMx_InitStructure.PWM_PS_SW        |= PWM2_SW_P22_P23;//切换端口
+  79   2          } else {
+  80   2              PWMx_InitStructure.PWM_EnoSelect    &= ~ENO2P;  //输出通道选择, ENO1P,ENO1N,ENO2P,ENO2N,ENO3P,ENO3N,E
+             -NO4P,ENO4N / ENO5P,ENO6P,ENO7P,ENO8P
+  81   2              PWMx_InitStructure.PWM_EnoSelect    &= ~ENO2N;
+  82   2              PWMx_InitStructure.PWM_PS_SW        &= ~PWM2_SW_P22_P23;//切换端口
+  83   2          }
+  84   1          PWMx_InitStructure.PWM_CC2Enable   = cfg.rh_enable ? ENABLE : DISABLE;//开启PWM4P输入捕获/比较输出,  E
+             -NABLE,DISABLE
+  85   1          PWMx_InitStructure.PWM_CC2NEnable  = cfg.rh_enable ? ENABLE : DISABLE;//开启PWM4N输入捕获/比较输出,  E
+             -NABLE,DISABLE
+  86   1          // pwm2
+  87   1          PWMx_InitStructure.PWM2_Mode        = CCMRn_PWM_MODE1;  //模式,   CCMRn_FREEZE,CCMRn_MATCH_VALID,CCMRn_MAT
+             -CH_INVALID,CCMRn_ROLLOVER,CCMRn_FORCE_INVALID,CCMRn_FORCE_VALID,CCMRn_PWM_MODE1,CCMRn_PWM_MODE2
+  88   1          PWMx_InitStructure.PWM2_SetPriority = Priority_0;     //指定中断优先级(低到高) Priority_0,Priority_1,Pri
+             -ority_2,Priority_3
+  89   1          PWMx_InitStructure.PWM2_Duty        = cfg.rh_duty * PERIOD / 100;//PWM4占空比时间, 0~Period
+  90   1      
+  91   1          ///////////////// PWM启动配置
+C51 COMPILER V9.60.7.0   MOTORS                                                            04/30/2023 15:48:03 PAGE 3   
+
+  92   1          PWMx_InitStructure.PWM_MainOutEnable= cfg.enable ? ENABLE : DISABLE;        //主输出使能, ENABLE,DISABLE
+  93   1          PWMx_InitStructure.PWM_CEN_Enable   = cfg.enable ? ENABLE : DISABLE;        //使能计数器, ENABLE,DISABLE
+  94   1      
+  95   1          PWM_Configuration(PWMA, &PWMx_InitStructure);       //初始化PWM,  PWMA,PWMB
+  96   1      }
+  97          
+  98          // 0 - 100
+  99          static u8 speed2duty(u8 speed, u8 direction) {
+ 100   1        //direction: 0back 1forward
+ 101   1        if(direction) {
+ 102   2          // forward
+ 103   2          // speed    duty
+ 104   2          // 0        50
+ 105   2          // 50       25
+ 106   2          // 100      0
+ 107   2          return 50 - speed / 2;
+ 108   2        } else {
+ 109   2          // backward
+ 110   2          // speed    duty
+ 111   2          // 0        50
+ 112   2          // 50       75
+ 113   2          // 100      100
+ 114   2          return 50 + speed / 2;
+ 115   2        }
+ 116   1      }
+ 117          
+ 118          void Motors_init() {
+ 119   1          MOTORS_PIN_INIT();
+ 120   1      }
+ 121          
+ 122          // 前进
+ 123          
+ 124          void Motors_forward(u8 speed) {
+ 125   1          // 四个轮子向前转动
+ 126   1          MotorCfg cfg;
+ 127   1          cfg.enable = 1;//总开关
+ 128   1          cfg.lq_enable = 1;
+ 129   1          cfg.lh_enable = 1;
+ 130   1          cfg.rq_enable = 1;
+ 131   1          cfg.rh_enable = 1;
+ 132   1          cfg.lq_duty = speed2duty(speed, 1);
+ 133   1          cfg.lh_duty = speed2duty(speed, 1);
+ 134   1          cfg.rq_duty = speed2duty(speed, 1);
+ 135   1          cfg.rh_duty = speed2duty(speed, 1);
+ 136   1          Motors_config(cfg);
+ 137   1      }
+ 138          // 后退
+ 139          void Motors_backward(u8 speed) {
+ 140   1          MotorCfg cfg;
+ 141   1          cfg.enable = 1;//总开关
+ 142   1          cfg.lq_enable = 1;
+ 143   1          cfg.lh_enable = 1;
+ 144   1          cfg.rq_enable = 1;
+ 145   1          cfg.rh_enable = 1;
+ 146   1          cfg.lq_duty = speed2duty(speed, 0);
+ 147   1          cfg.lh_duty = speed2duty(speed, 0);
+ 148   1          cfg.rq_duty = speed2duty(speed, 0);
+ 149   1          cfg.rh_duty = speed2duty(speed, 0);
+ 150   1          Motors_config(cfg);
+ 151   1      }
+ 152          void Motors_left(u8 speed) {
+ 153   1          MotorCfg cfg;
+C51 COMPILER V9.60.7.0   MOTORS                                                            04/30/2023 15:48:03 PAGE 4   
+
+ 154   1          cfg.enable = 1;//总开关
+ 155   1          cfg.lq_enable = 1;
+ 156   1          cfg.lh_enable = 1;
+ 157   1          cfg.rq_enable = 1;
+ 158   1          cfg.rh_enable = 1;
+ 159   1          cfg.lq_duty = speed2duty(0, 1);
+ 160   1          cfg.lh_duty = speed2duty(0, 1);
+ 161   1          cfg.rq_duty = speed2duty(speed, 1);
+ 162   1          cfg.rh_duty = speed2duty(speed, 1);
+ 163   1          Motors_config(cfg);
+ 164   1      }
+ 165          void Motors_right(u8 speed) {
+ 166   1          MotorCfg cfg;
+ 167   1          cfg.enable = 1;//总开关
+ 168   1          cfg.lq_enable = 1;
+ 169   1          cfg.lh_enable = 1;
+ 170   1          cfg.rq_enable = 1;
+ 171   1          cfg.rh_enable = 1;
+ 172   1          cfg.lq_duty = speed2duty(speed, 1);
+ 173   1          cfg.lh_duty = speed2duty(speed, 1);
+ 174   1          cfg.rq_duty = speed2duty(0, 1);
+ 175   1          cfg.rh_duty = speed2duty(0, 1);
+ 176   1          Motors_config(cfg);
+ 177   1      }
+ 178          void Motors_around(u8 speed) {
+ 179   1          MotorCfg cfg;
+ 180   1          cfg.enable = 1;//总开关
+ 181   1          cfg.lq_enable = 1;
+ 182   1          cfg.lh_enable = 1;
+ 183   1          cfg.rq_enable = 1;
+ 184   1          cfg.rh_enable = 1;
+ 185   1          cfg.lq_duty = speed2duty(speed, 1);
+ 186   1          cfg.lh_duty = speed2duty(speed, 1);
+ 187   1          cfg.rq_duty = speed2duty(speed, 0);
+ 188   1          cfg.rh_duty = speed2duty(speed, 0);
+ 189   1          Motors_config(cfg);
+ 190   1      }
+ 191          
+ 192          // 停止
+ 193          void Motors_stop() {
+ 194   1          MotorCfg cfg;
+ 195   1          cfg.enable = 0;//总开关
+ 196   1          cfg.lq_enable = 0;
+ 197   1          cfg.lh_enable = 0;
+ 198   1          cfg.rq_enable = 0;
+ 199   1          cfg.rh_enable = 0;
+ 200   1          cfg.lq_duty = 0;
+ 201   1          cfg.lh_duty = 0;
+ 202   1          cfg.rq_duty = 0;
+ 203   1          cfg.rh_duty = 0;
+ 204   1          Motors_config(cfg);
+ 205   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    865    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----     115
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+C51 COMPILER V9.60.7.0   MOTORS                                                            04/30/2023 15:48:03 PAGE 5   
+
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
