@@ -1,0 +1,88 @@
+C51 COMPILER V9.60.7.0   MAIN                                                              04/13/2023 09:11:06 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\softwares\C51_Keil\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Li
+                    -stings\main.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include "config.h"
+   2          #include "GPIO.h"
+   3          #include "delay.h"
+   4          #include "PWM.h"
+   5          
+   6          //P0.1
+   7          #define PERIOD  (MAIN_Fosc / 1000 - 1)
+   8          
+   9          void GPIO_config(void) {
+  10   1          GPIO_InitTypeDef  GPIO_InitStructure;   //结构定义
+  11   1          GPIO_InitStructure.Pin  = GPIO_Pin_1;   //指定要初始化的IO,
+  12   1          GPIO_InitStructure.Mode = GPIO_OUT_PP;  //指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPI
+             -O_OUT_PP
+  13   1          GPIO_Inilize(GPIO_P0, &GPIO_InitStructure);//初始化
+  14   1      }
+  15          
+  16          void PWM_config(void) {
+  17   1      
+  18   1          PWMx_InitDefine   PWMx_InitStructure;
+  19   1          // 总配置
+  20   1          // (MAIN_Fosc / 1000 - 1) 周期计数值
+  21   1          PWMx_InitStructure.PWM_Period       = PERIOD; //周期时间,   0~65535
+  22   1          PWMx_InitStructure.PWM_DeadTime     = 0;                //死区发生器设置, 0~255
+  23   1          PWMx_InitStructure.PWM_EnoSelect    = ENO6P;  //输出通道选择, ENO1P,ENO1N,ENO2P,ENO2N,ENO3P,ENO3N,ENO4P,E
+             -NO4N / ENO5P,ENO6P,ENO7P,ENO8P
+  24   1          PWMx_InitStructure.PWM_PS_SW        = PWM6_SW_P01;//切换端口
+  25   1      
+  26   1          // 具体PWM端口配置
+  27   1          // pwm6
+  28   1          PWMx_InitStructure.PWM6_Mode        = CCMRn_PWM_MODE2;  //模式,   CCMRn_FREEZE,CCMRn_MATCH_VALID,CCMRn_MAT
+             -CH_INVALID,CCMRn_ROLLOVER,CCMRn_FORCE_INVALID,CCMRn_FORCE_VALID,CCMRn_PWM_MODE1,CCMRn_PWM_MODE2
+  29   1          PWMx_InitStructure.PWM6_Duty        = 0;      //PWM4占空比时间, 0~Period
+  30   1      
+  31   1          // pwm6
+  32   1          PWMx_InitStructure.PWM_CC6Enable   = ENABLE;        //开启PWM6P输入捕获/比较输出,  ENABLE,DISABLE
+  33   1      
+  34   1          // PWM启动配置
+  35   1          PWMx_InitStructure.PWM_MainOutEnable= ENABLE;       //主输出使能, ENABLE,DISABLE
+  36   1          PWMx_InitStructure.PWM_CEN_Enable   = ENABLE;       //使能计数器, ENABLE,DISABLE
+  37   1          PWM_Configuration(PWMB, &PWMx_InitStructure);       //初始化PWM,  PWMA,PWMB
+  38   1      
+  39   1      }
+  40          
+  41          int main() {
+  42   1          PWMx_Duty duty;
+  43   1          u8 d = 0;// 百分比值
+  44   1          GPIO_config();
+  45   1          PWM_config();
+  46   1          EA = 1;
+  47   1      
+  48   1          while(1) {
+  49   2      
+  50   2              d ++;
+  51   2              if(d >= 100) {
+C51 COMPILER V9.60.7.0   MAIN                                                              04/13/2023 09:11:06 PAGE 2   
+
+  52   3                d = 0;
+  53   3              }
+  54   2              // 占空比。（高电平的 计数值） 【0 - 100】
+  55   2              duty.PWM6_Duty = d * PERIOD / 100 ;
+  56   2              UpdatePwm(PWMB, &duty);
+  57   2              delay_ms(10);
+  58   2          }
+  59   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    127    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----      71
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,6 @@
+".\Objects\main.obj",
+".\Objects\delay.obj",
+".\Objects\GPIO.obj",
+".\Objects\PWM.obj" 
+TO ".\Objects\project" 
+PRINT(".\Listings\project.m51") RAMSIZE(256) 
