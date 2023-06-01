@@ -1,0 +1,1 @@
+"Driver\Nixie.c" OPTIMIZE (8,SPEED) BROWSE INCDIR(.\Lib;.\Driver) DEBUG OBJECTEXTEND PRINT(.\Listings\Nixie.lst) TABS (2) OBJECT(.\Objects\Nixie.obj)
