@@ -1,0 +1,68 @@
+#include "config.h"
+#include "GPIO.h"
+#include "delay.h"
+#include "UART.h"
+#include "stdio.h"
+
+u8 key_state = 0x0f;//Up
+
+#define IS_KEY_DOWN(n) ((key_state & (1 << n)) >> n) == 0
+#define IS_KEY_UP				((key_state & (1 << n)) >> n) == 1
+
+//P51 P52 P53 P54
+
+void GPIO_config(void) {
+    GPIO_InitTypeDef GPIO_InitStructure;//结构定义
+    GPIO_InitStructure.Mode=GPIO_PullUp;//IO模式，GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP
+    GPIO_InitStructure.Pin=GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_4;//指定要初始化的IO
+    GPIO_Inilize(GPIO_P5, &GPIO_InitStructure);//初始化
+}
+
+void UART_config(void) {
+    COMx_InitDefine        COMx_InitStructure;                    //结构定义
+    COMx_InitStructure.UART_Mode      = UART_8bit_BRTx;    //模式, UART_ShiftRight,UART_8bit_BRTx,UART_9bit,UART_9bit_BRTx
+    COMx_InitStructure.UART_BRT_Use   = BRT_Timer1;            //选择波特率发生器, BRT_Timer1, BRT_Timer2 (注意: 串口2固定使用BRT_Timer2)
+    COMx_InitStructure.UART_BaudRate  = 115200ul;            //波特率, 一般 110 ~ 115200
+    COMx_InitStructure.UART_RxEnable  = ENABLE;                //接收允许,   ENABLE或DISABLE
+    COMx_InitStructure.BaudRateDouble = DISABLE;            //波特率加倍, ENABLE或DISABLE
+    COMx_InitStructure.UART_Interrupt = ENABLE;                //中断允许,   ENABLE或DISABLE
+    COMx_InitStructure.UART_Priority  = Priority_0;            //指定中断优先级(低到高) Priority_0,Priority_1,Priority_2,Priority_3
+    COMx_InitStructure.UART_P_SW      = UART1_SW_P30_P31;    //切换端口,   UART1_SW_P30_P31,UART1_SW_P36_P37,UART1_SW_P16_P17,UART1_SW_P43_P44
+    UART_Configuration(UART1, &COMx_InitStructure);        //初始化串口1 UART1,UART2,UART3,UART4
+}
+
+char putchar (char dat) {
+    TX1_write2buff(dat);
+    return dat;
+}
+
+int main() {
+    GPIO_config();
+    UART_config();
+    EA = 1;
+    while(1) {
+        if(P51 == 1 && ((key_state &0x01) >> 0) == 0) {//如果现在的值为1，上一次的值为0
+            //更新状态
+						key_state |= 0x01;
+            printf("P51 Up\r\n");
+        } else if(P51 == 0 && ((key_state &0x01) >> 0) == 1){
+						key_state &=~ 0x01;
+            //Down状态
+            printf("P51 Down\r\n");
+        }
+				//    0000 1 1 1 1
+				//&   0000 0 0 1 0
+				//=   0000 0 0 1 0
+				//>>1 0000 0 0 0 1
+				if(P52 == 1 && ((key_state &0x02) >> 1) == 0) {//如果现在的值为1，上一次的值为0
+            //更新状态
+						key_state |= 0x02;
+            printf("P52 Up\r\n");
+        } else if(P52 == 0 && ((key_state &0x02) >> 1) == 1){
+						key_state &=~ 0x02;
+            //Down状态
+            printf("P52 Down\r\n");
+        }
+        delay_ms(20);
+    }
+}

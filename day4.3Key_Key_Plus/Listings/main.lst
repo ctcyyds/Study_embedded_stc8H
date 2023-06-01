@@ -1,0 +1,272 @@
+C51 COMPILER V9.60.7.0   MAIN                                                              05/09/2023 15:26:06 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\instal\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listin
+                    -gs\main.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          //#include "config.h"
+   2          //#include "GPIO.h"
+   3          //#include "delay.h"
+   4          //#include "UART.h"
+   5          //#include <stdio.h>
+   6          
+   7          //u8 key_state = 0x0f;//Up
+   8          
+   9          //#define IS_KEY_DOWN(n)    ((key_state & (1 << n)) >> n) == 0
+  10          //#define IS_KEY_UP(n)      ((key_state & (1 << n)) >> n) == 1
+  11          
+  12          //#define SET_KEY_DOWN(n)   key_state &=~ (1 << n)
+  13          //#define SET_KEY_Up(n)     key_state |= (1 << n)
+  14          
+  15          ////P51 P52 P53 P54
+  16          
+  17          //void GPIO_config(void) {
+  18          //    GPIO_InitTypeDef GPIO_InitStructure;//结构定义
+  19          //    GPIO_InitStructure.Mode=GPIO_HighZ;//IO模式，GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP
+  20          //    GPIO_InitStructure.Pin=GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_4;//指定要初始化的IO
+  21          //    GPIO_Inilize(GPIO_P5, &GPIO_InitStructure);//初始化
+  22          //}
+  23          
+  24          //void UART_config(void) {
+  25          //    COMx_InitDefine        COMx_InitStructure;                    //结构定义
+  26          //    COMx_InitStructure.UART_Mode      = UART_8bit_BRTx;    //模式, UART_ShiftRight,UART_8bit_BRTx,UART_9
+             -bit,UART_9bit_BRTx
+  27          //    COMx_InitStructure.UART_BRT_Use   = BRT_Timer1;            //选择波特率发生器, BRT_Timer1, BRT_Timer
+             -2 (注意: 串口2固定使用BRT_Timer2)
+  28          //    COMx_InitStructure.UART_BaudRate  = 115200ul;            //波特率, 一般 110 ~ 115200
+  29          //    COMx_InitStructure.UART_RxEnable  = ENABLE;                //接收允许,   ENABLE或DISABLE
+  30          //    COMx_InitStructure.BaudRateDouble = DISABLE;            //波特率加倍, ENABLE或DISABLE
+  31          //    COMx_InitStructure.UART_Interrupt = ENABLE;                //中断允许,   ENABLE或DISABLE
+  32          //    COMx_InitStructure.UART_Priority  = Priority_0;            //指定中断优先级(低到高) Priority_0,Prior
+             -ity_1,Priority_2,Priority_3
+  33          //    COMx_InitStructure.UART_P_SW      = UART1_SW_P30_P31;    //切换端口,   UART1_SW_P30_P31,UART1_SW_P36
+             -_P37,UART1_SW_P16_P17,UART1_SW_P43_P44
+  34          //    UART_Configuration(UART1, &COMx_InitStructure);        //初始化串口1 UART1,UART2,UART3,UART4
+  35          //}
+  36          
+  37          ///char putchar (char dat) {
+  38          //    TX1_write2buff(dat);
+  39          //    return dat;
+  40          //}
+  41          
+  42          ///int main() {
+  43          //    GPIO_config();
+  44          //    UART_config();
+  45          //    EA = 1;
+  46          //    while(1) {
+  47          //        if(P51 && IS_KEY_DOWN(0)) {//如果现在的值为1，上一次的值为0
+  48          //            //更新状态
+  49          //            SET_KEY_Up(0);
+  50          //            printf("P51 Up\r\n");
+C51 COMPILER V9.60.7.0   MAIN                                                              05/09/2023 15:26:06 PAGE 2   
+
+  51          //        } else if(P51 == 0 && IS_KEY_UP(0)) {
+  52          //            SET_KEY_DOWN(0);
+  53          //            //Down状态
+  54          //            printf("P51 Down\r\n");
+  55          //        }
+  56          //        //    0000 1 1 1 1
+  57          //        //&   0000 0 0 1 0
+  58          //        //=   0000 0 0 1 0
+  59          //        //>>1 0000 0 0 0 1
+  60          //        if(P52 && IS_KEY_DOWN(1)) {//如果现在的值为1，上一次的值为0
+  61          //            //更新状态
+  62          //            SET_KEY_Up(1);
+  63          //            printf("P52 Up\r\n");
+  64          //        } else if(P52 == 0 && IS_KEY_UP(1)) {
+  65          //            SET_KEY_DOWN(1);
+  66          //            //Down状态
+  67          //            printf("P52 Down\r\n");
+  68          //        }
+  69          //        
+  70          //        if(P53 && IS_KEY_DOWN(2)) {//如果现在的值为1，上一次的值为0
+  71          //            //更新状态
+  72          //            SET_KEY_Up(2);
+  73          //            printf("P53 Up\r\n");
+  74          //        } else if(P53 == 0 && IS_KEY_UP(2)) {
+  75          //            SET_KEY_DOWN(2);
+  76          //            //Down状态
+  77          //            printf("P53 Down\r\n");
+  78          //        }
+  79          //        
+  80          //        if(P54 && IS_KEY_DOWN(3)) {//如果现在的值为1，上一次的值为0
+  81          //            //更新状态
+  82          //            SET_KEY_Up(3);
+  83          //            printf("P54 Up\r\n");
+  84          //        } else if(P54 == 0 && IS_KEY_UP(3)) {
+  85          //            SET_KEY_DOWN(3);
+  86          //            //Down状态
+  87          //            printf("P54 Down\r\n");
+  88          //        }
+  89          //        delay_ms(20);
+  90          //    }
+  91          //}
+  92          #include "config.h"
+  93          #include "GPIO.h"
+  94          #include "delay.h"
+  95          #include "UART.h"
+  96          #include <stdio.h>
+  97          //P51 P52 P53 P54
+  98          
+  99          // 上一次的状态值: 默认值0x01  0b0000 0001
+ 100          //  0b 0000 1    |   1  |    1 |  1
+ 101          //          key4 | key3 | key2 | key1
+ 102          //
+ 103          // key1
+ 104          // 0b 0000 1     |   1  |    1 |  1
+ 105          // & 0000  0         0       0    1
+ 106          //>> 0
+ 107          
+ 108          // key1
+ 109          // 0b 0000 1     |   1  |    1 |  0
+ 110          // |= 0000 0        0        0    1
+ 111          // 0b 0000 1     |   1  |    1 |  1
+ 112          
+C51 COMPILER V9.60.7.0   MAIN                                                              05/09/2023 15:26:06 PAGE 3   
+
+ 113          
+ 114          // key1
+ 115          // 0b 0000 1     |   1  |    1 |  1
+ 116          //    0000 0         0       0    1
+ 117          // ~
+ 118          // &  1111 1         1       1    0
+ 119          // 0b 0000 1     |   1  |    1 |  0
+ 120          
+ 121          
+ 122          // key2
+ 123          // 0b 0000 1     |   1  |    1 |  1
+ 124          // & 0000  0         0       1    0     0x02 
+ 125          // >> 1
+ 126          //   0000  0   0         0       1    ==0x01
+ 127          //   0000  0         0       1    0 
+ 128          
+ 129          u8 key_state = 0x0f;//1为up，0为down
+ 130          
+ 131          // 0    0x01
+ 132          // 1    0x02
+ 133          // 2    0x04
+ 134          // n    1 << n
+ 135          #define IS_KEY_DOWN(n)  ((key_state & (1 << n)) >> n) == 0
+ 136          #define IS_KEY_UP(n)    ((key_state & (1 << n)) >> n) == 1
+ 137          
+ 138          #define SET_KEY_DOWN(n)  key_state &= ~(1 << n)
+ 139          #define SET_KEY_UP(n)    key_state |= (1 << n)
+ 140          
+ 141          char putchar (char dat) {
+ 142   1        TX1_write2buff(dat);
+ 143   1        return dat;
+ 144   1      }
+ 145          
+ 146          void GPIO_config(void) {
+ 147   1        GPIO_InitTypeDef  GPIO_InitStructure;   //结构定义
+ 148   1        GPIO_InitStructure.Pin  = GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_4;    //指定要初始化的IO,
+ 149   1        GPIO_InitStructure.Mode = GPIO_HighZ; //指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OU
+             -T_PP
+ 150   1        GPIO_Inilize(GPIO_P5, &GPIO_InitStructure);//初始化
+ 151   1      }
+ 152          
+ 153          void UART_config(void) {
+ 154   1          COMx_InitDefine   COMx_InitStructure;         //结构定义
+ 155   1          COMx_InitStructure.UART_Mode      = UART_8bit_BRTx; //模式, UART_ShiftRight,UART_8bit_BRTx,UART_9bit,U
+             -ART_9bit_BRTx
+ 156   1          COMx_InitStructure.UART_BRT_Use   = BRT_Timer1;     //选择波特率发生器, BRT_Timer1, BRT_Timer2 (注意: 串
+             -口2固定使用BRT_Timer2)
+ 157   1          COMx_InitStructure.UART_BaudRate  = 115200ul;     //波特率, 一般 110 ~ 115200
+ 158   1          COMx_InitStructure.UART_RxEnable  = ENABLE;       //接收允许,   ENABLE或DISABLE
+ 159   1          COMx_InitStructure.BaudRateDouble = DISABLE;      //波特率加倍, ENABLE或DISABLE
+ 160   1          COMx_InitStructure.UART_Interrupt = ENABLE;       //中断允许,   ENABLE或DISABLE
+ 161   1          COMx_InitStructure.UART_Priority  = Priority_0;     //指定中断优先级(低到高) Priority_0,Priority_1,Prior
+             -ity_2,Priority_3
+ 162   1          COMx_InitStructure.UART_P_SW      = UART1_SW_P30_P31; //切换端口,   UART1_SW_P30_P31,UART1_SW_P36_P37,
+             -UART1_SW_P16_P17,UART1_SW_P43_P44
+ 163   1          UART_Configuration(UART1, &COMx_InitStructure);   //初始化串口1 UART1,UART2,UART3,UART4
+ 164   1      }
+ 165          
+ 166          int main() {
+ 167   1          GPIO_config();
+ 168   1          UART_config();
+ 169   1      
+C51 COMPILER V9.60.7.0   MAIN                                                              05/09/2023 15:26:06 PAGE 4   
+
+ 170   1          EA = 1;
+ 171   1      
+ 172   1          while(1) {
+ 173   2            if(P51 && IS_KEY_DOWN(0)) {
+ 174   3              // 如果现在的值为1(UP),上一次为0(Down)
+ 175   3              // 更新状态, key1 变为 1
+ 176   3              SET_KEY_UP(0);
+ 177   3              // 按键 UP
+ 178   3              printf("P51 UP\r\n");
+ 179   3            } else if(P51 == 0 && IS_KEY_UP(0)){
+ 180   3              // 如果现在的值为0(Down),上一次为1(Up)
+ 181   3              // 更新状态,  key1 变为 0
+ 182   3              SET_KEY_DOWN(0);
+ 183   3              // 按键 DOWN
+ 184   3              printf("P51 DOWN\r\n");
+ 185   3            }
+ 186   2            
+ 187   2            if(P52 && IS_KEY_DOWN(1)) {
+ 188   3              // 如果现在的值为1(UP),上一次为0(Down)
+ 189   3              // 更新状态
+ 190   3              SET_KEY_UP(1);
+ 191   3              // 按键 UP
+ 192   3              printf("P52 UP\r\n");
+ 193   3            } else if(P52 == 0 && IS_KEY_UP(1)){
+ 194   3              // 如果现在的值为0(Down),上一次为1(Up)
+ 195   3              // 更新状态
+ 196   3              SET_KEY_DOWN(1);
+ 197   3              // 按键 DOWN
+ 198   3              printf("P52 DOWN\r\n");
+ 199   3            }
+ 200   2            
+ 201   2            if(P53 && IS_KEY_DOWN(2)) {
+ 202   3              // 如果现在的值为1(UP),上一次为0(Down)
+ 203   3              // 更新状态
+ 204   3              SET_KEY_UP(2);
+ 205   3              // 按键 UP
+ 206   3              printf("P53 UP\r\n");
+ 207   3            } else if(P53 == 0 && IS_KEY_UP(2)){
+ 208   3              // 如果现在的值为0(Down),上一次为1(Up)
+ 209   3              // 更新状态
+ 210   3              SET_KEY_DOWN(2);
+ 211   3              // 按键 DOWN
+ 212   3              printf("P53 DOWN\r\n");
+ 213   3            }
+ 214   2            
+ 215   2            if(P54 && IS_KEY_DOWN(3)) {
+ 216   3              // 如果现在的值为1(UP),上一次为0(Down)
+ 217   3              // 更新状态
+ 218   3              SET_KEY_UP(3);
+ 219   3              // 按键 UP
+ 220   3              printf("P54 UP\r\n");
+ 221   3            } else if(P54 == 0 && IS_KEY_UP(3)){
+ 222   3              // 如果现在的值为0(Down),上一次为1(Up)
+ 223   3              // 更新状态
+ 224   3              SET_KEY_DOWN(3);
+ 225   3              // 按键 DOWN
+ 226   3              printf("P54 DOWN\r\n");
+ 227   3            }
+ 228   2            
+ 229   2            delay_ms(20);
+ 230   2          }
+ 231   1      }
+C51 COMPILER V9.60.7.0   MAIN                                                              05/09/2023 15:26:06 PAGE 5   
+
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    275    ----
+   CONSTANT SIZE    =     80    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1      15
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
