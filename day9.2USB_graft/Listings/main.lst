@@ -1,0 +1,262 @@
+C51 COMPILER V9.60.7.0   MAIN                                                              04/23/2023 16:20:46 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\instal\Keil_v5\C51\BIN\C51.EXE main.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(.\USB) DEBUG OBJECTE
+                    -XTEND PRINT(.\Listings\main.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include "stc.h"
+   2          #include "usb.h"
+   3          #include "usb_req_class.h"
+   4          #include "timer.h"
+   5          #include "config.h"
+*** ERROR C231 IN LINE 19 OF STC8xxxx.H: 'P0': redefinition
+*** ERROR C231 IN LINE 20 OF STC8xxxx.H: 'SP': redefinition
+*** ERROR C231 IN LINE 21 OF STC8xxxx.H: 'DPL': redefinition
+*** ERROR C231 IN LINE 22 OF STC8xxxx.H: 'DPH': redefinition
+*** ERROR C231 IN LINE 23 OF STC8xxxx.H: 'S4CON': redefinition
+*** ERROR C231 IN LINE 24 OF STC8xxxx.H: 'S4BUF': redefinition
+*** ERROR C231 IN LINE 25 OF STC8xxxx.H: 'PCON': redefinition
+*** ERROR C231 IN LINE 27 OF STC8xxxx.H: 'TCON': redefinition
+*** ERROR C231 IN LINE 28 OF STC8xxxx.H: 'TMOD': redefinition
+*** ERROR C231 IN LINE 29 OF STC8xxxx.H: 'TL0': redefinition
+*** ERROR C231 IN LINE 30 OF STC8xxxx.H: 'TL1': redefinition
+*** ERROR C231 IN LINE 31 OF STC8xxxx.H: 'TH0': redefinition
+*** ERROR C231 IN LINE 32 OF STC8xxxx.H: 'TH1': redefinition
+*** ERROR C231 IN LINE 33 OF STC8xxxx.H: 'AUXR': redefinition
+*** ERROR C231 IN LINE 37 OF STC8xxxx.H: 'P1': redefinition
+*** ERROR C231 IN LINE 38 OF STC8xxxx.H: 'P1M1': redefinition
+*** ERROR C231 IN LINE 39 OF STC8xxxx.H: 'P1M0': redefinition
+*** ERROR C231 IN LINE 40 OF STC8xxxx.H: 'P0M1': redefinition
+*** ERROR C231 IN LINE 41 OF STC8xxxx.H: 'P0M0': redefinition
+*** ERROR C231 IN LINE 42 OF STC8xxxx.H: 'P2M1': redefinition
+*** ERROR C231 IN LINE 43 OF STC8xxxx.H: 'P2M0': redefinition
+*** ERROR C231 IN LINE 47 OF STC8xxxx.H: 'SCON': redefinition
+*** ERROR C231 IN LINE 48 OF STC8xxxx.H: 'SBUF': redefinition
+*** ERROR C231 IN LINE 49 OF STC8xxxx.H: 'S2CON': redefinition
+*** ERROR C231 IN LINE 50 OF STC8xxxx.H: 'S2BUF': redefinition
+*** ERROR C231 IN LINE 52 OF STC8xxxx.H: 'P2': redefinition
+*** ERROR C231 IN LINE 54 OF STC8xxxx.H: 'P_SW1': redefinition
+*** ERROR C231 IN LINE 56 OF STC8xxxx.H: 'IE': redefinition
+*** ERROR C231 IN LINE 57 OF STC8xxxx.H: 'SADDR': redefinition
+*** ERROR C231 IN LINE 58 OF STC8xxxx.H: 'WKTCL': redefinition
+*** ERROR C231 IN LINE 59 OF STC8xxxx.H: 'WKTCH': redefinition
+*** ERROR C231 IN LINE 60 OF STC8xxxx.H: 'S3CON': redefinition
+*** ERROR C231 IN LINE 61 OF STC8xxxx.H: 'S3BUF': redefinition
+*** ERROR C231 IN LINE 62 OF STC8xxxx.H: 'TA': redefinition
+*** ERROR C231 IN LINE 63 OF STC8xxxx.H: 'IE2': redefinition
+*** ERROR C231 IN LINE 65 OF STC8xxxx.H: 'P3': redefinition
+*** ERROR C231 IN LINE 66 OF STC8xxxx.H: 'P3M1': redefinition
+*** ERROR C231 IN LINE 67 OF STC8xxxx.H: 'P3M0': redefinition
+*** ERROR C231 IN LINE 68 OF STC8xxxx.H: 'P4M1': redefinition
+*** ERROR C231 IN LINE 69 OF STC8xxxx.H: 'P4M0': redefinition
+*** ERROR C231 IN LINE 70 OF STC8xxxx.H: 'IP2': redefinition
+*** ERROR C231 IN LINE 71 OF STC8xxxx.H: 'IP2H': redefinition
+*** ERROR C231 IN LINE 72 OF STC8xxxx.H: 'IPH': redefinition
+*** ERROR C231 IN LINE 74 OF STC8xxxx.H: 'IP': redefinition
+*** ERROR C231 IN LINE 75 OF STC8xxxx.H: 'SADEN': redefinition
+*** ERROR C231 IN LINE 76 OF STC8xxxx.H: 'P_SW2': redefinition
+*** ERROR C231 IN LINE 78 OF STC8xxxx.H: 'ADC_CONTR': redefinition
+*** ERROR C231 IN LINE 79 OF STC8xxxx.H: 'ADC_RES': redefinition
+*** ERROR C231 IN LINE 80 OF STC8xxxx.H: 'ADC_RESL': redefinition
+C51 COMPILER V9.60.7.0   MAIN                                                              04/23/2023 16:20:46 PAGE 2   
+
+*** ERROR C231 IN LINE 82 OF STC8xxxx.H: 'P4': redefinition
+*** ERROR C231 IN LINE 83 OF STC8xxxx.H: 'WDT_CONTR': redefinition
+*** ERROR C231 IN LINE 85 OF STC8xxxx.H: 'IAP_DATA': redefinition
+*** ERROR C231 IN LINE 86 OF STC8xxxx.H: 'IAP_ADDRH': redefinition
+*** ERROR C231 IN LINE 87 OF STC8xxxx.H: 'IAP_ADDRL': redefinition
+*** ERROR C231 IN LINE 88 OF STC8xxxx.H: 'IAP_CMD': redefinition
+*** ERROR C231 IN LINE 89 OF STC8xxxx.H: 'IAP_TRIG': redefinition
+*** ERROR C231 IN LINE 90 OF STC8xxxx.H: 'IAP_CONTR': redefinition
+*** ERROR C231 IN LINE 99 OF STC8xxxx.H: 'P5': redefinition
+*** ERROR C231 IN LINE 100 OF STC8xxxx.H: 'P5M1': redefinition
+*** ERROR C231 IN LINE 101 OF STC8xxxx.H: 'P5M0': redefinition
+*** ERROR C231 IN LINE 102 OF STC8xxxx.H: 'P6M1': redefinition
+*** ERROR C231 IN LINE 103 OF STC8xxxx.H: 'P6M0': redefinition
+*** ERROR C231 IN LINE 104 OF STC8xxxx.H: 'SPSTAT': redefinition
+*** ERROR C231 IN LINE 105 OF STC8xxxx.H: 'SPCTL': redefinition
+*** ERROR C231 IN LINE 106 OF STC8xxxx.H: 'SPDAT': redefinition
+*** ERROR C231 IN LINE 108 OF STC8xxxx.H: 'PSW': redefinition
+*** ERROR C231 IN LINE 109 OF STC8xxxx.H: 'T4T3M': redefinition
+*** ERROR C231 IN LINE 110 OF STC8xxxx.H: 'T4H': redefinition
+*** ERROR C231 IN LINE 111 OF STC8xxxx.H: 'T4L': redefinition
+*** ERROR C231 IN LINE 112 OF STC8xxxx.H: 'T3H': redefinition
+*** ERROR C231 IN LINE 113 OF STC8xxxx.H: 'T3L': redefinition
+*** ERROR C231 IN LINE 114 OF STC8xxxx.H: 'T2H': redefinition
+*** ERROR C231 IN LINE 115 OF STC8xxxx.H: 'T2L': redefinition
+*** ERROR C231 IN LINE 130 OF STC8xxxx.H: 'USBCLK': redefinition
+*** ERROR C231 IN LINE 131 OF STC8xxxx.H: 'ADCCFG': redefinition
+*** ERROR C231 IN LINE 132 OF STC8xxxx.H: 'IP3': redefinition
+*** ERROR C231 IN LINE 134 OF STC8xxxx.H: 'ACC': redefinition
+*** ERROR C231 IN LINE 135 OF STC8xxxx.H: 'P7M1': redefinition
+*** ERROR C231 IN LINE 136 OF STC8xxxx.H: 'P7M0': redefinition
+*** ERROR C231 IN LINE 137 OF STC8xxxx.H: 'DPS': redefinition
+*** ERROR C231 IN LINE 138 OF STC8xxxx.H: 'DPL1': redefinition
+*** ERROR C231 IN LINE 139 OF STC8xxxx.H: 'DPH1': redefinition
+*** ERROR C231 IN LINE 140 OF STC8xxxx.H: 'CMPCR1': redefinition
+*** ERROR C231 IN LINE 141 OF STC8xxxx.H: 'CMPCR2': redefinition
+*** ERROR C231 IN LINE 143 OF STC8xxxx.H: 'P6': redefinition
+*** ERROR C231 IN LINE 149 OF STC8xxxx.H: 'USBDAT': redefinition
+*** ERROR C231 IN LINE 150 OF STC8xxxx.H: 'IP3H': redefinition
+*** ERROR C231 IN LINE 151 OF STC8xxxx.H: 'AUXINTIF': redefinition
+*** ERROR C231 IN LINE 153 OF STC8xxxx.H: 'B': redefinition
+*** ERROR C231 IN LINE 161 OF STC8xxxx.H: 'USBCON': redefinition
+*** ERROR C231 IN LINE 162 OF STC8xxxx.H: 'IAP_TPS': redefinition
+*** ERROR C231 IN LINE 164 OF STC8xxxx.H: 'P7': redefinition
+*** ERROR C231 IN LINE 171 OF STC8xxxx.H: 'USBADR': redefinition
+*** ERROR C231 IN LINE 172 OF STC8xxxx.H: 'RSTCFG': redefinition
+*** ERROR C231 IN LINE 948 OF STC8xxxx.H: 'CY': redefinition
+*** ERROR C231 IN LINE 949 OF STC8xxxx.H: 'AC': redefinition
+*** ERROR C231 IN LINE 950 OF STC8xxxx.H: 'F0': redefinition
+*** ERROR C231 IN LINE 951 OF STC8xxxx.H: 'RS1': redefinition
+*** ERROR C231 IN LINE 952 OF STC8xxxx.H: 'RS0': redefinition
+*** ERROR C231 IN LINE 953 OF STC8xxxx.H: 'OV': redefinition
+*** ERROR C231 IN LINE 954 OF STC8xxxx.H: 'F1': redefinition
+*** ERROR C231 IN LINE 955 OF STC8xxxx.H: 'P': redefinition
+*** ERROR C231 IN LINE 958 OF STC8xxxx.H: 'TF1': redefinition
+*** ERROR C231 IN LINE 959 OF STC8xxxx.H: 'TR1': redefinition
+*** ERROR C231 IN LINE 960 OF STC8xxxx.H: 'TF0': redefinition
+*** ERROR C231 IN LINE 961 OF STC8xxxx.H: 'TR0': redefinition
+*** ERROR C231 IN LINE 962 OF STC8xxxx.H: 'IE1': redefinition
+*** ERROR C231 IN LINE 963 OF STC8xxxx.H: 'IT1': redefinition
+*** ERROR C231 IN LINE 964 OF STC8xxxx.H: 'IE0': redefinition
+*** ERROR C231 IN LINE 965 OF STC8xxxx.H: 'IT0': redefinition
+*** ERROR C231 IN LINE 968 OF STC8xxxx.H: 'P00': redefinition
+C51 COMPILER V9.60.7.0   MAIN                                                              04/23/2023 16:20:46 PAGE 3   
+
+*** ERROR C231 IN LINE 969 OF STC8xxxx.H: 'P01': redefinition
+*** ERROR C231 IN LINE 970 OF STC8xxxx.H: 'P02': redefinition
+*** ERROR C231 IN LINE 971 OF STC8xxxx.H: 'P03': redefinition
+*** ERROR C231 IN LINE 972 OF STC8xxxx.H: 'P04': redefinition
+*** ERROR C231 IN LINE 973 OF STC8xxxx.H: 'P05': redefinition
+*** ERROR C231 IN LINE 974 OF STC8xxxx.H: 'P06': redefinition
+*** ERROR C231 IN LINE 975 OF STC8xxxx.H: 'P07': redefinition
+*** ERROR C231 IN LINE 978 OF STC8xxxx.H: 'P10': redefinition
+*** ERROR C231 IN LINE 979 OF STC8xxxx.H: 'P11': redefinition
+*** ERROR C231 IN LINE 980 OF STC8xxxx.H: 'P12': redefinition
+*** ERROR C231 IN LINE 981 OF STC8xxxx.H: 'P13': redefinition
+*** ERROR C231 IN LINE 982 OF STC8xxxx.H: 'P14': redefinition
+*** ERROR C231 IN LINE 983 OF STC8xxxx.H: 'P15': redefinition
+*** ERROR C231 IN LINE 984 OF STC8xxxx.H: 'P16': redefinition
+*** ERROR C231 IN LINE 985 OF STC8xxxx.H: 'P17': redefinition
+*** ERROR C231 IN LINE 1012 OF STC8xxxx.H: 'P20': redefinition
+*** ERROR C231 IN LINE 1013 OF STC8xxxx.H: 'P21': redefinition
+*** ERROR C231 IN LINE 1014 OF STC8xxxx.H: 'P22': redefinition
+*** ERROR C231 IN LINE 1015 OF STC8xxxx.H: 'P23': redefinition
+*** ERROR C231 IN LINE 1016 OF STC8xxxx.H: 'P24': redefinition
+*** ERROR C231 IN LINE 1017 OF STC8xxxx.H: 'P25': redefinition
+*** ERROR C231 IN LINE 1018 OF STC8xxxx.H: 'P26': redefinition
+*** ERROR C231 IN LINE 1019 OF STC8xxxx.H: 'P27': redefinition
+*** ERROR C231 IN LINE 1022 OF STC8xxxx.H: 'P30': redefinition
+*** ERROR C231 IN LINE 1023 OF STC8xxxx.H: 'P31': redefinition
+*** ERROR C231 IN LINE 1024 OF STC8xxxx.H: 'P32': redefinition
+*** ERROR C231 IN LINE 1025 OF STC8xxxx.H: 'P33': redefinition
+*** ERROR C231 IN LINE 1026 OF STC8xxxx.H: 'P34': redefinition
+*** ERROR C231 IN LINE 1027 OF STC8xxxx.H: 'P35': redefinition
+*** ERROR C231 IN LINE 1028 OF STC8xxxx.H: 'P36': redefinition
+*** ERROR C231 IN LINE 1029 OF STC8xxxx.H: 'P37': redefinition
+*** ERROR C231 IN LINE 1049 OF STC8xxxx.H: 'P40': redefinition
+*** ERROR C231 IN LINE 1050 OF STC8xxxx.H: 'P41': redefinition
+*** ERROR C231 IN LINE 1051 OF STC8xxxx.H: 'P42': redefinition
+*** ERROR C231 IN LINE 1052 OF STC8xxxx.H: 'P43': redefinition
+*** ERROR C231 IN LINE 1053 OF STC8xxxx.H: 'P44': redefinition
+*** ERROR C231 IN LINE 1054 OF STC8xxxx.H: 'P45': redefinition
+*** ERROR C231 IN LINE 1055 OF STC8xxxx.H: 'P46': redefinition
+*** ERROR C231 IN LINE 1056 OF STC8xxxx.H: 'P47': redefinition
+*** ERROR C231 IN LINE 1059 OF STC8xxxx.H: 'P50': redefinition
+*** ERROR C231 IN LINE 1060 OF STC8xxxx.H: 'P51': redefinition
+*** ERROR C231 IN LINE 1061 OF STC8xxxx.H: 'P52': redefinition
+*** ERROR C231 IN LINE 1062 OF STC8xxxx.H: 'P53': redefinition
+*** ERROR C231 IN LINE 1063 OF STC8xxxx.H: 'P54': redefinition
+*** ERROR C231 IN LINE 1064 OF STC8xxxx.H: 'P55': redefinition
+*** ERROR C231 IN LINE 1065 OF STC8xxxx.H: 'P56': redefinition
+*** ERROR C231 IN LINE 1066 OF STC8xxxx.H: 'P57': redefinition
+*** ERROR C231 IN LINE 1069 OF STC8xxxx.H: 'P60': redefinition
+*** ERROR C231 IN LINE 1070 OF STC8xxxx.H: 'P61': redefinition
+*** ERROR C231 IN LINE 1071 OF STC8xxxx.H: 'P62': redefinition
+*** ERROR C231 IN LINE 1072 OF STC8xxxx.H: 'P63': redefinition
+*** ERROR C231 IN LINE 1073 OF STC8xxxx.H: 'P64': redefinition
+*** ERROR C231 IN LINE 1074 OF STC8xxxx.H: 'P65': redefinition
+*** ERROR C231 IN LINE 1075 OF STC8xxxx.H: 'P66': redefinition
+*** ERROR C231 IN LINE 1076 OF STC8xxxx.H: 'P67': redefinition
+*** ERROR C231 IN LINE 1079 OF STC8xxxx.H: 'P70': redefinition
+*** ERROR C231 IN LINE 1080 OF STC8xxxx.H: 'P71': redefinition
+*** ERROR C231 IN LINE 1081 OF STC8xxxx.H: 'P72': redefinition
+*** ERROR C231 IN LINE 1082 OF STC8xxxx.H: 'P73': redefinition
+*** ERROR C231 IN LINE 1083 OF STC8xxxx.H: 'P74': redefinition
+*** ERROR C231 IN LINE 1084 OF STC8xxxx.H: 'P75': redefinition
+*** ERROR C231 IN LINE 1085 OF STC8xxxx.H: 'P76': redefinition
+C51 COMPILER V9.60.7.0   MAIN                                                              04/23/2023 16:20:46 PAGE 4   
+
+*** ERROR C231 IN LINE 1086 OF STC8xxxx.H: 'P77': redefinition
+*** ERROR C231 IN LINE 1090 OF STC8xxxx.H: 'SM0': redefinition
+*** ERROR C231 IN LINE 1091 OF STC8xxxx.H: 'SM1': redefinition
+*** ERROR C231 IN LINE 1092 OF STC8xxxx.H: 'SM2': redefinition
+*** ERROR C231 IN LINE 1093 OF STC8xxxx.H: 'REN': redefinition
+*** ERROR C231 IN LINE 1094 OF STC8xxxx.H: 'TB8': redefinition
+*** ERROR C231 IN LINE 1095 OF STC8xxxx.H: 'RB8': redefinition
+*** ERROR C231 IN LINE 1096 OF STC8xxxx.H: 'TI': redefinition
+*** ERROR C231 IN LINE 1097 OF STC8xxxx.H: 'RI': redefinition
+*** ERROR C231 IN LINE 1100 OF STC8xxxx.H: 'EA': redefinition
+*** ERROR C231 IN LINE 1101 OF STC8xxxx.H: 'ELVD': redefinition
+*** ERROR C231 IN LINE 1102 OF STC8xxxx.H: 'EADC': redefinition
+*** ERROR C231 IN LINE 1103 OF STC8xxxx.H: 'ES': redefinition
+*** ERROR C231 IN LINE 1104 OF STC8xxxx.H: 'ET1': redefinition
+*** ERROR C231 IN LINE 1105 OF STC8xxxx.H: 'EX1': redefinition
+*** ERROR C231 IN LINE 1106 OF STC8xxxx.H: 'ET0': redefinition
+*** ERROR C231 IN LINE 1107 OF STC8xxxx.H: 'EX0': redefinition
+*** ERROR C231 IN LINE 1322 OF STC8xxxx.H: 'PPCA': redefinition
+*** ERROR C231 IN LINE 1323 OF STC8xxxx.H: 'PLVD': redefinition
+*** ERROR C231 IN LINE 1324 OF STC8xxxx.H: 'PADC': redefinition
+*** ERROR C231 IN LINE 1325 OF STC8xxxx.H: 'PS': redefinition
+*** ERROR C231 IN LINE 1326 OF STC8xxxx.H: 'PT1': redefinition
+*** ERROR C231 IN LINE 1327 OF STC8xxxx.H: 'PX1': redefinition
+*** ERROR C231 IN LINE 1328 OF STC8xxxx.H: 'PT0': redefinition
+*** ERROR C231 IN LINE 1329 OF STC8xxxx.H: 'PX0': redefinition
+*** ERROR C231 IN LINE 2558 OF STC8xxxx.H: 'u8': redefinition
+*** ERROR C141 IN LINE 2559 OF STC8xxxx.H: syntax error near 'u16', expected 'hdata'
+*** ERROR C141 IN LINE 2560 OF STC8xxxx.H: syntax error near 'u32', expected 'hdata'
+   6          
+   7          void sys_init();
+   8          
+   9          void main()
+  10          {
+  11   1          sys_init();
+  12   1          usb_init();
+  13   1          timer_init();
+  14   1      
+  15   1          EA = 1;
+  16   1          
+  17   1          while (1)
+  18   1          {
+  19   2              usb_class_in();
+  20   2              
+  21   2              if (f1ms)
+  22   2              {
+  23   3                  f1ms = 0;
+  24   3                  scan_key();
+  25   3              }
+  26   2          }
+  27   1      }
+  28          
+  29          void sys_init()
+  30          {
+  31   1        P_SW2 |= 0x80;  //扩展寄存器(XFR)访问使能
+  32   1        
+  33   1          P3M0 &= ~0x03;
+  34   1          P3M1 |= 0x03;
+  35   1          
+  36   1          IRC48MCR = 0x80;
+  37   1          while (!(IRC48MCR & 0x01));
+  38   1          
+  39   1          USBCLK = 0x00;
+C51 COMPILER V9.60.7.0   MAIN                                                              04/23/2023 16:20:46 PAGE 5   
+
+  40   1          USBCON = 0x90;
+  41   1      }
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  201 ERROR(S)

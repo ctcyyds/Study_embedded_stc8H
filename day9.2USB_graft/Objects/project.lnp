@@ -1,0 +1,11 @@
+".\Objects\main.obj",
+".\Objects\GPIO.obj",
+".\Objects\timer.obj",
+".\Objects\usb.obj",
+".\Objects\usb_desc.obj",
+".\Objects\usb_req_class.obj",
+".\Objects\usb_req_std.obj",
+".\Objects\usb_req_vendor.obj",
+".\Objects\util.obj" 
+TO ".\Objects\project" 
+PRINT(".\Listings\project.m51") RAMSIZE(256) 
